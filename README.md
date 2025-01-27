@@ -35,4 +35,6 @@ password şifreleme
 login sayfasının  oluşturulması
 11- Kullanıcı yetkileri,
 Authentication, Authorization, JSON web token jwt
+12- Token kayıt,
+cookie parser kurulumu
 
