@@ -19,3 +19,11 @@ Controller
 5- Model oluşturma,
 Mongoose
 Schema Yapısı
+6- Thunder Client extension
+Thunder client kurulumu
+collection,request, reponse
+Photolar için controller route ve app .js dosyalarında düzenleme
+modeller yardımıyla yeni fotoğraflar eklenmesi sağlandı mongodb den kontrol edildi. thunder clienttan istekler gönderildi.
+7-photoların listelenmesi ve sıralanması
+dinamik photolar eklenmesi name ve descriptionların eklenmesi
+menü tıklanmasında hangi menüdeysek hover olması controllera link eklenmesi ve activelik durumunun güncellenmesi
