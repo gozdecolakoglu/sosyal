@@ -27,3 +27,4 @@ modeller yardımıyla yeni fotoğraflar eklenmesi sağlandı mongodb den kontrol
 7-photoların listelenmesi ve sıralanması
 dinamik photolar eklenmesi name ve descriptionların eklenmesi
 menü tıklanmasında hangi menüdeysek hover olması controllera link eklenmesi ve activelik durumunun güncellenmesi
+8-photo sayfasının oluşturulması
