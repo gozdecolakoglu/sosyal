@@ -33,5 +33,6 @@ menü tıklanmasında hangi menüdeysek hover olması controllera link eklenmesi
 Bcrypt JS kurulumu
 password şifreleme
 login sayfasının  oluşturulması
-11-
+11- Kullanıcı yetkileri,
+Authentication, Authorization, JSON web token jwt
 
