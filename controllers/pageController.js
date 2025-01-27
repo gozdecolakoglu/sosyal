@@ -16,4 +16,9 @@ const getIndexPage = (req, res) => {
     });
   };
   
-  export { getIndexPage, getAboutPage, getRegisterPage };
+  const getLoginPage = (req, res) => {
+    res.render('login', {
+      link: 'login',
+    });
+  };
+  export { getIndexPage, getAboutPage, getRegisterPage, getLoginPage };

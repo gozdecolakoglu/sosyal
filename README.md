@@ -29,3 +29,9 @@ dinamik photolar eklenmesi name ve descriptionların eklenmesi
 menü tıklanmasında hangi menüdeysek hover olması controllera link eklenmesi ve activelik durumunun güncellenmesi
 8-photo sayfasının oluşturulması
 9- register sayfasının oluşturulması
+10- kayıt işlemlerinde şifre gizleme,
+Bcrypt JS kurulumu
+password şifreleme
+login sayfasının  oluşturulması
+11-
+
