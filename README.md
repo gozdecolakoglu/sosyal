@@ -37,6 +37,8 @@ login sayfasının  oluşturulması
 Authentication, Authorization, JSON web token jwt
 12- Token kayıt,
 cookie parser kurulumu
-13-Kayıtlı kullanıcı için dinamik sayfa görünümü
-14-Validation kavramı Register uyarıları
+13- Kayıtlı kullanıcı için dinamik sayfa görünümü
+14- Validation kavramı, validator kurulumu, Register uyarıları
+15- Fotoğraf ve kullanıcı ilişkisi, Kullanıcının fotoğraf eklemesi
+16-
 

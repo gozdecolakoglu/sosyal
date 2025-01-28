@@ -1,6 +1,7 @@
 import User from '../models/userModel.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import Photo from '../models/photoModel.js';
 
 const createUser = async (req, res) => {
 
@@ -19,7 +20,6 @@ const createUser = async (req, res) => {
         errors2[key] = error.errors[key].message;
       });
     }
-    console.log('ERRORS2:::', errors2);
     res.status(400).json(errors2);
   }
 };
@@ -71,9 +71,12 @@ const createToken = (userId) => {
     expiresIn: '1d',
   });
 };
-const getDashboardPage = (req, res) => {
+
+const getDashboardPage = async (req, res) => {
+  const photos = await Photo.find({ user: res.locals.user._id });
   res.render('dashboard', {
     link: 'dashboard',
+    photos,
   });
 };
 export { createUser, loginUser, getDashboardPage };
