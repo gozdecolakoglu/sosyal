@@ -40,5 +40,5 @@ cookie parser kurulumu
 13- Kayıtlı kullanıcı için dinamik sayfa görünümü
 14- Validation kavramı, validator kurulumu, Register uyarıları
 15- Fotoğraf ve kullanıcı ilişkisi, Kullanıcının fotoğraf eklemesi
-16-
+16- Görsel yükleme, cloudinary platformu ilişkisi, cloudinary kurulumu , express file upload paketi kurulumu
 
