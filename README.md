@@ -41,4 +41,5 @@ cookie parser kurulumu
 14- Validation kavramı, validator kurulumu, Register uyarıları
 15- Fotoğraf ve kullanıcı ilişkisi, Kullanıcının fotoğraf eklemesi
 16- Görsel yükleme, cloudinary platformu ilişkisi, cloudinary kurulumu , express file upload paketi kurulumu
+17- Kullanıcıların ve Profil sayfalarının oluşturulması
 

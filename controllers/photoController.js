@@ -34,7 +34,13 @@ try {
 
 const getAllPhotos = async (req, res) => {
   try {
-    const photos = await Photo.find({});
+    const photos = res.locals.user
+    ? await Photo.find({ user: { $ne: res.locals.user._id } })
+    : await Photo.find({});
+  res.status(200).render('photos', {
+    photos,
+    link: 'photos',
+  });
     res.status(200).render("photos",{
       photos,
       link: "photos",
