@@ -37,4 +37,6 @@ login sayfasının  oluşturulması
 Authentication, Authorization, JSON web token jwt
 12- Token kayıt,
 cookie parser kurulumu
+13-Kayıtlı kullanıcı için dinamik sayfa görünümü
+14-
 
