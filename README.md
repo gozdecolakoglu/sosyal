@@ -44,8 +44,9 @@ cookie parser kurulumu
 17- Kullanıcıların ve Profil sayfalarının oluşturulması
 18- bugların giderilmesi, follow,followers
 19- follow-followers-unfollow, method-override kurulumu
-20- Photo silme işlemi
+20- Photo delete işlemi
 21- photo update işlemleri
+22- İletişim sayfaları, nodemailler kurulumu
 
 .env dosyasında olması gerekenler:
 // mongodb için;
@@ -72,6 +73,8 @@ npm i jsonwebtoken
 npm i cloudinary
 npm i express-fileupload
 npm i method-override
+npm i nodemailler
+
 
 
 
