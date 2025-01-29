@@ -59,6 +59,8 @@ JWT_SECRET =
 CLOUD_NAME=
 CLOUD_API_KEY=
 CLOUD_API_SECRET=
+NODE_MAIL= 
+NODE_PASS= 
 
 indirilen paketler:
 npm init
