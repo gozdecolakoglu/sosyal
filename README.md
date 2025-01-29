@@ -47,6 +47,7 @@ cookie parser kurulumu
 20- Photo delete işlemi
 21- photo update işlemleri
 22- İletişim sayfaları, nodemailler kurulumu
+23- Bugların giderilmesi
 
 .env dosyasında olması gerekenler:
 // mongodb için;

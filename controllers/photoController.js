@@ -51,10 +51,17 @@ const getAllPhotos = async (req, res) => {
 const getAPhoto = async (req, res) => {
   try {
     const photo = await Photo.findById({ _id: req.params.id }).populate('user');
+
+    let isOwner = false;
+
+    if (res.locals.user) {
+      isOwner = photo.user.equals(res.locals.user._id);
+    }
+
     res.status(200).render('photo', {
       photo,
-      user: res.locals.user,
       link: 'photos',
+      isOwner,
     });
   } catch (error) {
     res.status(500).json({
@@ -68,28 +75,15 @@ const deletePhoto = async (req, res) => {
   try {
     const photo = await Photo.findById(req.params.id);
 
-    if (!photo) {
-      return res.status(404).json({
-        succeeded: false,
-        message: 'Photo not found',
-      });
-    }
+    const photoId = photo.image_id;
 
-    // Kullanıcının fotoğrafın sahibi olup olmadığını kontrol et
-    if (photo.user.toString() !== res.locals.user._id.toString()) {
-      return res.status(403).json({
-        succeeded: false,
-        message: 'You are not authorized to delete this photo',
-      });
-    }
-
-    await cloudinary.uploader.destroy(photo.image_id);
-    await Photo.findByIdAndDelete(req.params.id);
+    await cloudinary.uploader.destroy(photoId);
+    await Photo.findOneAndRemove({ _id: req.params.id });
 
     res.status(200).redirect('/users/dashboard');
   } catch (error) {
     res.status(500).json({
-      succeeded: false,
+      succeded: false,
       error,
     });
   }
@@ -98,9 +92,11 @@ const deletePhoto = async (req, res) => {
 const updatePhoto = async (req, res) => {
   try {
     const photo = await Photo.findById(req.params.id);
+
     if (req.files) {
       const photoId = photo.image_id;
       await cloudinary.uploader.destroy(photoId);
+
       const result = await cloudinary.uploader.upload(
         req.files.image.tempFilePath,
         {
@@ -108,13 +104,18 @@ const updatePhoto = async (req, res) => {
           folder: 'social',
         }
       );
+
       photo.url = result.secure_url;
       photo.image_id = result.public_id;
+
       fs.unlinkSync(req.files.image.tempFilePath);
     }
+
     photo.name = req.body.name;
     photo.description = req.body.description;
+
     photo.save();
+
     res.status(200).redirect(`/photos/${req.params.id}`);
   } catch (error) {
     res.status(500).json({
@@ -123,4 +124,5 @@ const updatePhoto = async (req, res) => {
     });
   }
 };
+
 export { createPhoto, getAllPhotos, getAPhoto, deletePhoto, updatePhoto };
