@@ -42,4 +42,33 @@ cookie parser kurulumu
 15- Fotoğraf ve kullanıcı ilişkisi, Kullanıcının fotoğraf eklemesi
 16- Görsel yükleme, cloudinary platformu ilişkisi, cloudinary kurulumu , express file upload paketi kurulumu
 17- Kullanıcıların ve Profil sayfalarının oluşturulması
+18- bugların giderilmesi, follow,followers
+
+.env dosyasında olması gerekenler:
+// mongodb için;
+DB_URL=
+PORT=
+//json web token için;
+JWT_SECRET = 
+//cloudinart için ;
+CLOUD_NAME=
+CLOUD_API_KEY=
+CLOUD_API_SECRET=
+
+indirilen paketler:
+npm init
+npm install express
+npm install -D nodemon
+npm i ejs
+npm i cookie -parser
+npm i bcryptjs
+npm i mongoose
+npm i validator
+npm i jsonwebtoken
+npm i cloudinary
+npm i express-fileupload
+npm i dotenv
+
+
+
 
