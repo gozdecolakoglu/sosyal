@@ -45,6 +45,7 @@ cookie parser kurulumu
 18- bugların giderilmesi, follow,followers
 19- follow-followers-unfollow, method-override kurulumu
 20- Photo silme işlemi
+21- photo update işlemleri
 
 .env dosyasında olması gerekenler:
 // mongodb için;
