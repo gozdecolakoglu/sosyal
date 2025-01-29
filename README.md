@@ -43,6 +43,7 @@ cookie parser kurulumu
 16- Görsel yükleme, cloudinary platformu ilişkisi, cloudinary kurulumu , express file upload paketi kurulumu
 17- Kullanıcıların ve Profil sayfalarının oluşturulması
 18- bugların giderilmesi, follow,followers
+19- follow-followers-unfollow, method-override kurulumu
 
 .env dosyasında olması gerekenler:
 // mongodb için;
@@ -59,15 +60,16 @@ indirilen paketler:
 npm init
 npm install express
 npm install -D nodemon
+npm i mongoose
 npm i ejs
+npm i dotenv
 npm i cookie -parser
 npm i bcryptjs
-npm i mongoose
 npm i validator
 npm i jsonwebtoken
 npm i cloudinary
 npm i express-fileupload
-npm i dotenv
+npm i method-override
 
 
 
