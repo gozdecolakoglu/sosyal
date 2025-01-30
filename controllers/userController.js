@@ -2,6 +2,8 @@ import User from '../models/userModel.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Photo from '../models/photoModel.js';
+import { v2 as cloudinary } from 'cloudinary';
+import fs from 'fs';
 
 const createUser = async (req, res) => {
 
@@ -168,6 +170,44 @@ const unfollow = async (req, res) => {
     });
   }
 };
+
+const updateProfilePhoto = async (req, res) => {
+  try {
+    const user = await User.findById(res.locals.user._id);
+
+    if (req.files && req.files.profilePhoto) {
+      // Eski profil fotoğrafını Cloudinary'den sil
+      if (user.profilePhotoId) {
+        await cloudinary.uploader.destroy(user.profilePhotoId);
+      }
+
+      // Yeni fotoğrafı Cloudinary'e yükle
+      const result = await cloudinary.uploader.upload(
+        req.files.profilePhoto.tempFilePath,
+        {
+          use_filename: true,
+          folder: 'profile_photos',
+        }
+      );
+
+      // Kullanıcının profil fotoğrafını güncelle
+      user.profilePhoto = result.secure_url;
+      user.profilePhotoId = result.public_id;
+
+      // Geçici dosyayı sil
+      fs.unlinkSync(req.files.profilePhoto.tempFilePath);
+    }
+
+    await user.save();
+    res.status(200).redirect('/users/dashboard');
+  } catch (error) {
+    res.status(500).json({
+      succeded: false,
+      error,
+    });
+  }
+};
+
 export {
   createUser,
   loginUser,
@@ -176,4 +216,5 @@ export {
   getAUser,
   follow,
   unfollow,
+  updateProfilePhoto,
 };

@@ -1,3 +1,320 @@
+usermodel;
+
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import validator from 'validator';
+
+const { Schema } = mongoose;
+const userSchema = new Schema(
+  {
+    username: {
+      type: String,
+      required: [true, 'Username area is required'],
+      lowercase: true,
+      validate: [validator.isAlphanumeric, 'Only Alphanumeric characters'],
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: [true, 'Email area is required'],
+      unique: true,
+      validate: [validator.isEmail, 'Valid email is required'],
+    },
+    password: {
+      type: String,
+      required: [true, 'Password area is required'],
+      minLength: [4, 'At least 4 characters'],
+    },
+    profilePhoto: {
+      type: String, // Fotoğrafın dosya yolunu tutacak
+      default: "/images/team1.jpg", // Varsayılan bir profil fotoğrafı
+    },
+    profilePhotoId: {
+      type: String,
+    },
+    followers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+    followings: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
+
+userSchema.pre('save', function (next) {
+  const user = this;
+  console.log("user pass1", user.password);
+  bcrypt.hash(user.password, 10, (err, hash) => {
+    user.password = hash;
+    console.log("user pass2", user.password);
+    next();
+  });
+});
+
+const User = mongoose.model('User', userSchema);
+export default User;
+
+usercontroller;
+import User from '../models/userModel.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import Photo from '../models/photoModel.js';
+import { v2 as cloudinary } from 'cloudinary';
+import fs from 'fs';
+
+const createUser = async (req, res) => {
+
+  try {
+    const user = await User.create(req.body);
+    res.status(201).json({ user: user._id });
+
+  } catch (error) {
+    console.log('ERROR', error);
+    let errors2 = {};
+    if (error.code === 11000) {
+      errors2.email = 'The Email or Username is already registered';
+    }
+    if (error.name === 'ValidationError') {
+      Object.keys(error.errors).forEach((key) => {
+        errors2[key] = error.errors[key].message;
+      });
+    }
+    res.status(400).json(errors2);
+  }
+};
+const loginUser = async (req, res) => {
+
+  try {
+    const { username, password } = req.body;
+
+    const user = await User.findOne({ username });
+    let same = false;
+
+    if (user) {
+      same = await bcrypt.compare(password, user.password);
+      
+    } else {
+
+      return res.status(401).json({
+        succeded: false,
+        error: 'There is no such user',
+      });
+    }
+
+    if (same) {
+      const token = createToken(user._id);
+      res.cookie('jwt', token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      });
+
+      
+      res.redirect('/users/dashboard');
+
+    } else {
+      res.status(401).json({
+        succeded: false,
+        error: 'Paswords are not matched',
+      });
+    }
+
+  } catch (error) {
+    res.status(500).json({
+      succeded: false,
+      error,
+    });
+  }
+};
+const createToken = (userId) => {
+  return jwt.sign({ userId }, process.env.JWT_SECRET, {
+    expiresIn: '1d',
+  });
+};
+
+const getDashboardPage = async (req, res) => {
+  const photos = await Photo.find({ user: res.locals.user._id });
+  const user = await User.findById({ _id: res.locals.user._id }).populate([
+    'followings',
+    'followers',
+  ]);
+  res.render('dashboard', {
+    link: 'dashboard',
+    photos,
+    user,
+  });
+};
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({ _id: { $ne: res.locals.user._id } });
+    res.status(200).render('users', {
+      users,
+      link: 'users',
+    });
+  } catch (error) {
+    res.status(500).json({
+      succeded: false,
+      error,
+    });
+  }
+};
+const getAUser = async (req, res) => {
+  try {
+    const user = await User.findById({ _id: req.params.id });
+    const inFollowers = user.followers.some((follower) => {
+      return follower.equals(res.locals.user._id);
+    });
+    const photos = await Photo.find({ user: user._id });
+    res.status(200).render('user', {
+      user,
+      photos,
+      link: 'users',
+      inFollowers,
+    });
+  } catch (error) {
+    res.status(500).json({
+      succeded: false,
+      error,
+    });
+  }
+};
+const follow = async (req, res) => {
+  // res.locals.user._id
+  try {
+    let user = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        $push: { followers: res.locals.user._id },
+      },
+      { new: true }
+    );
+    user = await User.findByIdAndUpdate(
+      { _id: res.locals.user._id },
+      {
+        $push: { followings: req.params.id },
+      },
+      { new: true }
+    );
+    res.status(200).redirect(`/users/${req.params.id}`);
+  } catch (error) {
+    res.status(500).json({
+      succeded: false,
+      error,
+    });
+  }
+};
+const unfollow = async (req, res) => {
+  // res.locals.user._id
+  try {
+    let user = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        $pull: { followers: res.locals.user._id },
+      },
+      { new: true }
+    );
+    user = await User.findByIdAndUpdate(
+      { _id: res.locals.user._id },
+      {
+        $pull: { followings: req.params.id },
+      },
+      { new: true }
+    );
+    res.status(200).redirect(`/users/${req.params.id}`);
+  } catch (error) {
+    res.status(500).json({
+      succeded: false,
+      error,
+    });
+  }
+};
+
+const updateProfilePhoto = async (req, res) => {
+  try {
+    const user = await User.findById(res.locals.user._id);
+
+    if (req.files && req.files.profilePhoto) {
+      // Eski profil fotoğrafını Cloudinary'den sil
+      if (user.profilePhotoId) {
+        await cloudinary.uploader.destroy(user.profilePhotoId);
+      }
+
+      // Yeni fotoğrafı Cloudinary'e yükle
+      const result = await cloudinary.uploader.upload(
+        req.files.profilePhoto.tempFilePath,
+        {
+          use_filename: true,
+          folder: 'profile_photos',
+        }
+      );
+
+      // Kullanıcının profil fotoğrafını güncelle
+      user.profilePhoto = result.secure_url;
+      user.profilePhotoId = result.public_id;
+
+      // Geçici dosyayı sil
+      fs.unlinkSync(req.files.profilePhoto.tempFilePath);
+    }
+
+    await user.save();
+    res.status(200).redirect('/users/dashboard');
+  } catch (error) {
+    res.status(500).json({
+      succeded: false,
+      error,
+    });
+  }
+};
+
+export {
+  createUser,
+  loginUser,
+  getDashboardPage,
+  getAllUsers,
+  getAUser,
+  follow,
+  unfollow,
+  updateProfilePhoto,
+};
+
+userroute;
+import express from 'express';
+import * as userController from '../controllers/userController.js';
+import * as authMiddleware from '../middlewares/authMiddleware.js';
+
+const router = express.Router();
+router.route('/register').post(userController.createUser);
+router.route('/login').post(userController.loginUser);
+router
+  .route('/dashboard')
+  .get(authMiddleware.authenticateToken, userController.getDashboardPage);
+router
+  .route('/')
+  .get(authMiddleware.authenticateToken, userController.getAllUsers);
+router
+  .route('/:id')
+  .get(authMiddleware.authenticateToken, userController.getAUser);
+  router
+  .route('/:id/follow')
+  .put(authMiddleware.authenticateToken, userController.follow);
+router
+  .route('/:id/unfollow')
+  .put(authMiddleware.authenticateToken, userController.unfollow);
+router
+  .route('/update-profile-photo')
+  .post(authMiddleware.authenticateToken, userController.updateProfilePhoto);
+export default router;
+
+dashboard;
+
 <%- include("partials/_header") %>
   <!-- body -->
 
@@ -240,3 +557,4 @@
 
                   <!-- end footer -->
                   <%- include("partials/_footer") %>
+
