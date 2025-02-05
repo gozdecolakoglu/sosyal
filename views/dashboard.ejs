@@ -24,46 +24,21 @@
               </div>
             </div>
           </div>
-           <!-- Profil Fotoğrafı Güncelleme Formu -->
-           <div class="row">
-            <div class="col-md-12 text_align_center">
-              <form id="updateProfilePhotoForm" method="POST" action="/users/update-profile-photo" enctype="multipart/form-data">
-                <input type="file" name="profilePhoto" id="profilePhoto" accept="image/*" style="display: none;">
-                <label for="profilePhoto" class="read_more" style="cursor: pointer; margin-top: 20px;">Update profile photo</label>
-                <button type="submit" style="display: none;">Send</button>
-              </form>
-            </div>
-          </div>
-          <!-- JavaScript ile formu otomatik gönder -->
-          <script>
-          document.getElementById('profilePhoto').addEventListener('change', function() {
-            document.getElementById('updateProfilePhotoForm').submit();
-          });
-          </script>          
-<!-- about me ve profil fotoğrafı -->    
+           
+<!--profil fotoğrafı -->    
               <div class="satteb text_align_center">
-                <h3>About Me</h3>
-                <p>fact that a reader will be distracted by the readable content of a page when looking at its
-                  layout. The point of using Lorem Ipsum is that itfact that a reader will be distracted by the
-                  readable content of a page when looking at its layout. The point of using Lorem Ipsum is that
-                  itfact that a reader will be distracted by the readable content of a page when looking at its
-                  layout. The point of using Lorem Ipsum is that itfact that a reader will be distracted by the
-                  readable content of a page when looking at its layout. The point of using Lorem Ipsum is that
-                  it
-                </p>
                 <div class="row">
                   <div class="col-md-12 text_align_center">
-                    <img src="<%= user.profilePhoto %>" alt="Profil Fotoğrafı" style="width: 150px; height: 150px; border-radius: 50%; margin-top: 20px;">
+                    <i><img src="/images/profile_1.jpg" alt="#" /></i>
                   </div>
                 </div>
               </div>
-
 
           <div class="row">
             <div class="col-md-12 text_align_center">
               <button data-toggle="modal" data-target=".bd-example-modal-lg" type="button"
                 style=" margin-top:100px; margin-left: 50%; transform: translateX(-50%);" class="read_more"
-                href="about.html">Add New Photo</button>
+                href="#">Add New Photo</button>
             </div>
           </div>
 
@@ -125,20 +100,17 @@
                     <div class="col-md-4">
                       <div class="team_box text_align_center">
                         <div class="team_img">
-                          <figure><img src="/images/team1.jpg" alt="#" /></figure>
+                          <a href="/users/<%= user._id %>"> <figure><img src="/images/team4.png" alt="#" /></figure> </a>
                         </div>
                         <div class="craig">
                           <h3>
-                            <%= follower.username %>
+                            <a href="/users/<%= user._id %>">    <%= follower.username %> </a>
                           </h3>
-                          <span>PHOTOGRAPHER</span>
+                        
                           <ul class="social_icon ">
-                            <li><a href="Javascript:void(0)"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                            </li>
-                            <li><a href="Javascript:void(0)"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                            </li>
+                       
                             <li><a href="/users/<%= follower._id %>"><i class="fa fa-external-link-square"
-                                  aria-hidden="true"></i></a>
+                                  aria-hidden="true"> View</i></a>
                             </li>
                           </ul>
                         </div>
@@ -164,20 +136,15 @@
                         <div class="col-md-4">
                           <div class="team_box text_align_center">
                             <div class="team_img">
-                              <figure><img src="/images/team1.jpg" alt="#" /></figure>
+                              <a href="/users/<%= user._id %>">   <figure><img src="/images/team4.png" alt="#" /></figure> </a>
                             </div>
                             <div class="craig">
                               <h3>
-                                <%= following.username %>
+                                <a href="/users/<%= user._id %>">       <%= following.username %> </a>
                               </h3>
-                              <span>PHOTOGRAPHER</span>
                               <ul class="social_icon ">
-                                <li><a href="Javascript:void(0)"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                                </li>
-                                <li><a href="Javascript:void(0)"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                                </li>
                                 <li><a href="/users/<%= following._id %>"><i class="fa fa-external-link-square"
-                                      aria-hidden="true"></i></a>
+                                      aria-hidden="true"> View</i></a>
                                 </li>
                               </ul>
                             </div>
@@ -222,9 +189,11 @@
                                   </div>
                                   <div style="margin-bottom: 20px ;" class="col-md-12">
                                     <input type="file" name="image" class="form-control-file">
+                                   <br> Upload 484x417 px 
                                   </div>
                                   <div class="col-md-12">
                                     <div class="group_form">
+                                    
                                       <button class="read_more">Upload File</button>
                                     </div>
                                   </div>
