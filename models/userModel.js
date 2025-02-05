@@ -23,13 +23,6 @@ const userSchema = new Schema(
       required: [true, 'Password area is required'],
       minLength: [4, 'At least 4 characters'],
     },
-    profilePhoto: {
-      type: String, // Fotoğrafın dosya yolunu tutacak
-      default: "/images/team1.jpg", // Varsayılan bir profil fotoğrafı
-    },
-    profilePhotoId: {
-      type: String,
-    },
     followers: [
       {
         type: Schema.Types.ObjectId,
