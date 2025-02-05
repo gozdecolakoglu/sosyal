@@ -226,7 +226,7 @@ button {
 
 .titlepage h2 {
     font-size: 60px;
-    color: #202020;
+    color: #f6449d;
     line-height: 60px;
     font-weight: bold;
     padding: 0;
@@ -236,7 +236,7 @@ button {
 .titlepage span {
     padding-bottom: 10px;
     display: block;
-    color: #c9c9c9;
+    color: #53358d;
     font-weight: bold;
     font-size: 71px;
     line-height: 70px;
@@ -266,7 +266,7 @@ button {
 
 .read_more:hover {
     background: #fff;
-    color: #000;
+    color: #53358d;
 }
 
 .text_align_left {
@@ -319,7 +319,7 @@ button {
 
 .header-area {
     width: 100%;
-    border-top: #f6388e solid 16px;
+    border-top: #53358d solid 16px;
     background: #fff;
     height: 100px;
     padding: 23px 20px;
@@ -348,7 +348,7 @@ button {
 }
 
 .site-navbar ul li a {
-    color: #1c1c1b;
+    color: #53358d;
     font-size: 16px;
     display: block;
     text-decoration: none;
@@ -493,7 +493,7 @@ ul.email li i {
     left: 0;
     top: 0;
     height: 100%;
-    background: #f6388e;
+    background: #8f77b8;
     width: 40%;
 }
 .creative h1 {
@@ -516,7 +516,7 @@ ul.email li i {
     color:#000;
 }
 .creative .read_more:hover {
-    background: #000;
+    background: #f6449d;
     color: #fff;
 }
 .cemara figure {
@@ -719,7 +719,7 @@ ul.email li i {
 
 
 
-/** team section **/
+/** user section **/
 
 .team {
     background: #fefefd;
@@ -780,7 +780,7 @@ ul.social_icon li a i:hover {
 }
 
 
-/** end team section **/
+/** end user section **/
 /** customers **/
 .customers {
     background: #fff;
@@ -844,7 +844,7 @@ ul.social_icon li a i:hover {
 .group_form .send_btn {
     font-size: 18px;
     transition: ease-in all 0.5s;
-    background-color: #2a2929;
+    background-color: #53358d;
     color: #fff;
     max-width: 159px;
     width: 100%;
@@ -914,7 +914,7 @@ ul.top_infomation li a i {
     margin-right: 5px;
     color: #f9fcfd;
     text-align: center;
-    background: #323232;
+    background: #e5b9d0;
     border-radius: 40px;
     width: 47px;
     height: 47px;
@@ -935,7 +935,7 @@ ul.top_infomation li a i:hover {
 
 .copyright {
     margin-top: 70px;
-    background: #252525;
+    background: #e5b9d0;
         padding-top: 25px;
  padding-bottom: 25px;
 }

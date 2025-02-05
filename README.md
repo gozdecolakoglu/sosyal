@@ -48,6 +48,9 @@ cookie parser kurulumu
 21- photo update işlemleri
 22- İletişim sayfaları, nodemailler kurulumu
 23- Bugların giderilmesi
+24- Read me update
+25- Profil fotoğrafı güncelleme
+26- css dosyaları , header footer index about sayfalarında düzenlemeler
 
 .env dosyasında olması gerekenler:
 // mongodb için;

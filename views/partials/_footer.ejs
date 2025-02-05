@@ -4,18 +4,17 @@
        <div class="row">
          <div class="col-md-12">
            <ul class="menu_footer">
-             <li><a class="active" href="index.html">Home</a></li>
-             <li><a href="/about">About</a></li>
-             <li><a href="/photos">Photos</a></li>
-             <li><a href="/users">Users</a></li>
-             <li><a href="/contact">Contact</a></li>
+             <li><a class="<%= link === 'index' && 'active' %>" href="/">Home</a></li>
+             <li><a class="<%= link === 'about' && 'active' %>" href="/about">About</a></li>
+             <li><a class="<%= link === 'photos' && 'active' %>" href="/photos">Photos</a></li>
+             <li><a class="<%= link === 'users' && 'active' %>" href="/users">Users</a></li>
            </ul>
          </div>
          <div class="col-md-12">
            <ul class="top_infomation">
              <li><a href="javascript:void(0)"><i><img src="/images/loc.png" alt="#" /></i></a></li>
              <li><a href="javascript:void(0)"><i><img src="/images/call.png" alt="#" /></i></a></li>
-             <li><a href="javascript:void(0)"><i><img src="/images/mail.png" alt="#" /></i></a></li>
+             <li><a href="/contact"><i><img src="/images/mail.png" alt="contact" /></i></a></li>
            </ul>
          </div>
        </div>
@@ -24,17 +23,14 @@
        <div class="container">
          <div class="row d_flex">
            <div class="col-md-8">
-             <p>© 2022 All Rights Reserved. Design by <a href="https://html.design/"> Free html
-                 Templates</a>
+             <p>© 2025 by gozdecolakoglu</a>
              </p>
            </div>
            <div class="col-md-4">
              <ul class="social_icon_bottom ">
-               <li><a href="Javascript:void(0)"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-               </li>
+               <li><a href="Javascript:void(0)"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
                <li><a href="Javascript:void(0)"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-               <li><a href="Javascript:void(0)"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-               </li>
+               <li><a href="Javascript:void(0)"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
              </ul>
            </div>
          </div>
