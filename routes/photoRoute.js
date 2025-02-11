@@ -8,8 +8,10 @@ router
   .post(photoController.createPhoto)
   .get(photoController.getAllPhotos);
 
-router.route('/:id').get(photoController.getAPhoto);
-router.route('/:id').delete(photoController.deletePhoto);
-router.route('/:id').put(photoController.updatePhoto);
+  router
+  .route('/:id')
+  .get(photoController.getAPhoto)
+  .delete(photoController.deletePhoto)
+  .put(photoController.updatePhoto);
 
 export default router;

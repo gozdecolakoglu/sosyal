@@ -74,17 +74,20 @@ const getAPhoto = async (req, res) => {
 const deletePhoto = async (req, res) => {
   try {
     const photo = await Photo.findById(req.params.id);
+    if (!photo) {
+      return res.status(404).json({ succeded: false, error: "Fotoğraf bulunamadı" });
+    }
 
     const photoId = photo.image_id;
+    await cloudinary.uploader.destroy(photoId); // Cloudinary'den sil
+    await Photo.findByIdAndDelete(req.params.id); // DB'den sil
 
-    await cloudinary.uploader.destroy(photoId);
-    await Photo.findOneAndRemove({ _id: req.params.id });
-
-    res.status(200).redirect('/users/dashboard');
+    res.status(200).redirect("/users/dashboard");
   } catch (error) {
+    console.error("Silme hatası:", error); // Hata detayını logla
     res.status(500).json({
       succeded: false,
-      error,
+      error: error.message, // Hata mesajını göster
     });
   }
 };
