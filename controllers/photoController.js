@@ -74,20 +74,39 @@ const getAPhoto = async (req, res) => {
 const deletePhoto = async (req, res) => {
   try {
     const photo = await Photo.findById(req.params.id);
+
+    // 1. Fotoğrafın varlığını kontrol et
     if (!photo) {
-      return res.status(404).json({ succeded: false, error: "Fotoğraf bulunamadı" });
+      return res.status(404).json({ 
+        succeded: false, 
+        error: "There is no photo!" 
+      });
     }
 
-    const photoId = photo.image_id;
-    await cloudinary.uploader.destroy(photoId); // Cloudinary'den sil
-    await Photo.findByIdAndDelete(req.params.id); // DB'den sil
+    // 2. Kullanıcı yetkisi kontrolü (Sadece fotoğraf sahibi silebilsin)
+    if (photo.user.toString() !== res.locals.user._id.toString()) {
+      return res.status(403).json({ 
+        succeded: false, 
+        error: "You have not authority!" 
+      });
+    }
 
-    res.status(200).redirect("/users/dashboard");
+    // 3. Cloudinary'den fotoğrafı sil
+    const photoId = photo.image_id;
+    await cloudinary.uploader.destroy(photoId); 
+
+    // 4. Veritabanından fotoğrafı sil
+    await Photo.findByIdAndDelete(req.params.id);
+
+    // 5. Başarılı yanıt
+    res.status(200).redirect('/users/dashboard');
+
   } catch (error) {
-    console.error("Silme hatası:", error); // Hata detayını logla
+    // Hata durumunda detayları logla
+    console.error("Silme hatası:", error);
     res.status(500).json({
       succeded: false,
-      error: error.message, // Hata mesajını göster
+      error: error.message 
     });
   }
 };
