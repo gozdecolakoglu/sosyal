@@ -996,15 +996,4 @@ ul.social_icon_bottom li a i:hover {
     padding-top: 80px;
 } 
 
-.comment-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-.comment {
-    background: #f5f5f5;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-  }
+
