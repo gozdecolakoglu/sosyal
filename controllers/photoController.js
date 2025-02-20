@@ -50,7 +50,9 @@ const getAllPhotos = async (req, res) => {
 
 const getAPhoto = async (req, res) => {
   try {
-    const photo = await Photo.findById({ _id: req.params.id }).populate('user');
+    const photo = await Photo.findById({ _id: req.params.id })
+      .populate('user')
+      .populate('comments.postedBy');
 
     let isOwner = false;
 
@@ -147,4 +149,27 @@ const updatePhoto = async (req, res) => {
   }
 };
 
-export { createPhoto, getAllPhotos, getAPhoto, deletePhoto, updatePhoto };
+const addComment = async (req, res) => {
+  try {
+    if (!res.locals.user) {
+      return res.status(401).redirect('/users/login');
+    }
+
+    const photo = await Photo.findById(req.params.id);
+    photo.comments.push({
+      text: req.body.text,
+      postedBy: res.locals.user._id
+    });
+
+    await photo.save();
+    res.redirect(`/photos/${req.params.id}`);
+
+  } catch (error) {
+    res.status(500).json({
+      succeded: false,
+      error
+    });
+  }
+};
+
+export { createPhoto, getAllPhotos, getAPhoto, deletePhoto, updatePhoto, addComment };

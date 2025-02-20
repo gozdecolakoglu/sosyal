@@ -28,6 +28,20 @@ const photoSchema = new Schema({
   image_id: {
     type: String,
   },
+  comments: [{
+    text: {
+      type: String,
+      required: true
+    },
+    postedBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
+  }]
 });
 
 const Photo = mongoose.model('Photo', photoSchema);

@@ -14,4 +14,7 @@ router
   .delete(photoController.deletePhoto)
   .put(photoController.updatePhoto);
 
+ router
+ .post('/:id/comments', photoController.addComment);
+
 export default router;
