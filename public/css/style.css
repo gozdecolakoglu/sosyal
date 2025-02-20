@@ -995,5 +995,41 @@ ul.social_icon_bottom li a i:hover {
 .inner_page .about {
     padding-top: 80px;
 } 
+.comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+.comment {
+    background: #f5f5f5;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
 
+.form-group {
+    background-color: #fff !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+    border:solid #dbdbdb 2px !important;
+    
+}
 
+.btn-primary {
+    color: #fff;
+  background-color: #f6388e;
+  border-color: #f6388e;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #53358d;
+    border-color: #53358d;
+  }
+
+.btn-primary:focus, .btn-primary.focus {
+    box-shadow: 0 0 0 0.2rem #f6388e !important;
+    background-color: #f6388e;
+    border-color: #f6388e;
+  }

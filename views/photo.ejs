@@ -103,30 +103,29 @@
             </div>
          </div>
          <!-- Yorum Formu -->
-<% if (user) { %>
-   <div class="container mt-5">
-     <form action="/photos/<%= photo._id %>/comments" method="POST">
-       <div class="form-group">
-         <textarea class="form-control" name="text" rows="3" required></textarea>
-       </div>
-       <button type="submit" class="btn btn-primary">Send</button>
-     </form>
-   </div>
- <% } %>
- 
- <!-- Yorum Listesi -->
- <div class="container mt-4">
-   <% photo.comments.forEach(comment => { %>
-     <div class="card mb-3">
-       <div class="card-body">
-         <h6 class="card-subtitle mb-2 text-muted">
-           <%= comment.postedBy.username %> - 
-           <%= comment.createdAt.toLocaleDateString() %>
-         </h6>
-         <p class="card-text"><%= comment.text %></p>
-       </div>
-     </div>
-   <% }) %>
- </div>
-
+         <% if (user) { %>
+            <div class="container mt-5">
+              <form action="/photos/<%= photo._id %>/comments" method="POST">
+                <div class="form-group">
+                  <textarea class="form-control" name="text" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send</button>
+              </form>
+            </div>
+          <% } %>
+          
+          <!-- Yorum Listesi -->
+          <div class="container mt-4">
+            <% photo.comments.forEach(comment => { %>
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h6 class="card-subtitle mb-2 text-muted">
+                    <%= comment.postedBy.username %> - 
+                    <%= comment.createdAt.toLocaleDateString() %>
+                  </h6>
+                  <p class="card-text"><%= comment.text %></p>
+                </div>
+              </div>
+            <% }) %>
+          </div>
          <%- include("partials/_footer") %>
