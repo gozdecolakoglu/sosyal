@@ -103,6 +103,24 @@
                </div>
             </div>
          </div>
+                           <!-- Fotoğraf detaylarının altına ekle -->
+                           <div class="container mt-5">
+<div class="interactions" style="margin: 20px 0; display: flex; gap: 15px;">
+   <% if (user) { %>
+     <form action="/photos/<%= photo._id %>/like" method="POST">
+       <button type="submit" class="btn <%= isLiked ? 'btn-success' : 'btn-outline-success' %>">
+         👍 Like (<%= photo.likes.length %>)
+       </button>
+     </form>
+     <form action="/photos/<%= photo._id %>/dislike" method="POST">
+       <button type="submit" class="btn <%= isDisliked ? 'btn-danger' : 'btn-outline-danger' %>">
+         👎 Dislike (<%= photo.dislikes.length %>)
+       </button>
+     </form>
+   <% } else { %>
+     <p>for comment, Like or dislike <a href="/users/login">login</a></p>
+   <% } %>
+ </div> </div>
          <!-- Yorum Formu -->
          <% if (user) { %>
             <div class="container mt-5">
@@ -114,10 +132,10 @@
               </form>
             </div>
           <% } %>
-          
+
           <!-- Yorum Listesi -->
           <div class="container mt-4">
-            <% photo.comments.forEach(comment => { %>
+            <% photo.comments.slice().sort((a, b) => b.createdAt - a.createdAt).forEach(comment => { %>
               <div class="card mb-3">
                 <div class="card-body">
                   <h6 class="card-subtitle mb-2 text-muted">
@@ -129,4 +147,5 @@
               </div>
             <% }) %>
           </div>
+
          <%- include("partials/_footer") %>

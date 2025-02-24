@@ -8,13 +8,16 @@ router
   .post(photoController.createPhoto)
   .get(photoController.getAllPhotos);
 
-  router
+router
   .route('/:id')
   .get(photoController.getAPhoto)
   .delete(photoController.deletePhoto)
   .put(photoController.updatePhoto);
 
- router
+router
  .post('/:id/comments', photoController.addComment);
+
+router.post('/:id/like', photoController.likePhoto);
+router.post('/:id/dislike', photoController.dislikePhoto);
 
 export default router;

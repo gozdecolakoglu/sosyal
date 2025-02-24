@@ -55,15 +55,21 @@ const getAPhoto = async (req, res) => {
       .populate('comments.postedBy');
 
     let isOwner = false;
+    let isLiked = false;
+    let isDisliked = false;
 
     if (res.locals.user) {
       isOwner = photo.user.equals(res.locals.user._id);
+      isLiked = photo.likes.some(likeId => likeId.equals(res.locals.user._id));
+      isDisliked = photo.dislikes.some(dislikeId => dislikeId.equals(res.locals.user._id));
     }
 
     res.status(200).render('photo', {
       photo,
       link: 'photos',
       isOwner,
+      isLiked,
+      isDisliked
     });
   } catch (error) {
     res.status(500).json({
@@ -172,4 +178,68 @@ const addComment = async (req, res) => {
   }
 };
 
-export { createPhoto, getAllPhotos, getAPhoto, deletePhoto, updatePhoto, addComment };
+const likePhoto = async (req, res) => {
+  try {
+    if (!res.locals.user) {
+      return res.status(401).redirect('/users/login');
+    }
+
+    const userId = res.locals.user._id;
+    const photo = await Photo.findById(req.params.id);
+
+    const hasLiked = photo.likes.some(likeId => likeId.equals(userId));
+    const hasDisliked = photo.dislikes.some(dislikeId => dislikeId.equals(userId));
+
+    if (hasLiked) {
+      photo.likes.pull(userId);
+    } else {
+      photo.likes.addToSet(userId);
+      if (hasDisliked) {
+        photo.dislikes.pull(userId);
+      }
+    }
+
+    await photo.save();
+    res.redirect(`/photos/${req.params.id}`);
+
+  } catch (error) {
+    res.status(500).json({
+      succeeded: false,
+      error: error.message
+    });
+  }
+};
+
+const dislikePhoto = async (req, res) => {
+  try {
+    if (!res.locals.user) {
+      return res.status(401).redirect('/users/login');
+    }
+
+    const userId = res.locals.user._id;
+    const photo = await Photo.findById(req.params.id);
+
+    const hasDisliked = photo.dislikes.some(dislikeId => dislikeId.equals(userId));
+    const hasLiked = photo.likes.some(likeId => likeId.equals(userId));
+
+    if (hasDisliked) {
+      photo.dislikes.pull(userId);
+    } else {
+      photo.dislikes.addToSet(userId);
+      if (hasLiked) {
+        photo.likes.pull(userId);
+      }
+    }
+
+    await photo.save();
+    res.redirect(`/photos/${req.params.id}`);
+
+  } catch (error) {
+    res.status(500).json({
+      succeeded: false,
+      error: error.message
+    });
+  }
+};
+
+export { createPhoto, getAllPhotos, getAPhoto, deletePhoto, updatePhoto, addComment, dislikePhoto, likePhoto, };

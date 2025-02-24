@@ -31,16 +31,24 @@ const photoSchema = new Schema({
   comments: [{
     text: {
       type: String,
-      required: true
+      required: true,
     },
     postedBy: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
     },
     createdAt: {
       type: Date,
-      default: Date.now
-    }
+      default: Date.now,
+    },
+  }],
+  likes: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  dislikes: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   }]
 });
 
