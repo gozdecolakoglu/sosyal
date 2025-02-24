@@ -81,7 +81,9 @@ npm i cloudinary
 npm i express-fileupload
 npm i method-override
 npm i nodemailler
-
+npm install method-override
+npm i multer
+npm i path
 
 
 test2

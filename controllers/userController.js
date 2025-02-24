@@ -2,6 +2,8 @@ import User from '../models/userModel.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Photo from '../models/photoModel.js';
+import cloudinary from 'cloudinary';
+import fs from 'fs';
 
 const createUser = async (req, res) => {
 
@@ -168,6 +170,71 @@ const unfollow = async (req, res) => {
     });
   }
 };
+
+// Avatarı güncelle
+const updateAvatar = async (req, res) => {
+  try {
+    const user = await User.findById(res.locals.user._id);
+    
+    // Eski resmi sil
+    if(user.avatar.public_id) {
+      await cloudinary.uploader.destroy(user.avatar.public_id);
+    }
+
+    // Yeni resmi yükle
+    const result = await cloudinary.uploader.upload(
+      req.file.path, // Multer'dan gelen dosya yolu
+      {
+        folder: 'avatars',
+      }
+    );
+
+    user.avatar = {
+      url: result.secure_url,
+      public_id: result.public_id
+    };
+
+    await user.save();
+    fs.unlinkSync(req.file.path); // Temp dosyayı sil
+
+    res.redirect('/users/dashboard');
+
+  } catch (error) {
+    res.status(500).json({
+      succeeded: false,
+      error
+    });
+  }
+};
+
+// deleteAvatar controller'ında default path kontrolü
+const deleteAvatar = async (req, res) => {
+  try {
+    const user = await User.findById(res.locals.user._id);
+    
+    if(user.avatar.public_id) {
+      await cloudinary.uploader.destroy(user.avatar.public_id);
+    }
+
+    // Default resim kontrolü
+    const defaultAvatar = "/images/profile_1.jpg";
+    if(user.avatar.url !== defaultAvatar) {
+      user.avatar = {
+        url: defaultAvatar,
+        public_id: null
+      };
+      await user.save();
+    }
+
+    res.redirect('/users/dashboard');
+  } catch (error) {
+    res.status(500).json({
+      succeeded: false,
+      error
+    });
+  }
+};
+
 export {
   createUser,
   loginUser,
@@ -176,4 +243,6 @@ export {
   getAUser,
   follow,
   unfollow,
+  updateAvatar, 
+  deleteAvatar,
 };

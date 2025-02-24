@@ -23,6 +23,13 @@ const userSchema = new Schema(
       required: [true, 'Password area is required'],
       minLength: [4, 'At least 4 characters'],
     },
+    avatar: {
+      url: {
+        type: String,
+        default: "/images/profile_1.jpg"
+      },
+      public_id: String
+    },
     followers: [
       {
         type: Schema.Types.ObjectId,
