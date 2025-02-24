@@ -265,8 +265,8 @@ button {
 }
 
 .read_more:hover {
-    background: #fff;
-    color: #53358d;
+    background: #53358d;
+    color: #fff;
 }
 
 .text_align_left {
