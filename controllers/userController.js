@@ -57,7 +57,7 @@ const loginUser = async (req, res) => {
     } else {
       res.status(401).json({
         succeded: false,
-        error: 'Paswords are not matched',
+        error: 'Paswords are not matched try again',
       });
     }
 
