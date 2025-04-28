@@ -1,5 +1,26 @@
+indirilen paketler:
+npm init
+npm install express
+npm install -D nodemon
+npm i mongoose
+npm i ejs
+npm i dotenv
+npm i cookie -parser
+npm i bcryptjs
+npm i validator
+npm i jsonwebtoken
+npm i cloudinary
+npm i express-fileupload
+npm i method-override
+npm i nodemailler
+npm install method-override
+npm i multer
+npm i path
+
 1-Kurulumlar,
 Template kurulumu
+npm init -y
+npm i ejs
 Nodemon paket kurulumu
 Express paket kurulumu
 Github Repo 
@@ -66,25 +87,5 @@ CLOUD_API_SECRET=
 NODE_MAIL= 
 NODE_PASS= 
 
-indirilen paketler:
-npm init
-npm install express
-npm install -D nodemon
-npm i mongoose
-npm i ejs
-npm i dotenv
-npm i cookie -parser
-npm i bcryptjs
-npm i validator
-npm i jsonwebtoken
-npm i cloudinary
-npm i express-fileupload
-npm i method-override
-npm i nodemailler
-npm install method-override
-npm i multer
-npm i path
 
 
-test2
-test3
