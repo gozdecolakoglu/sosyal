@@ -140,7 +140,8 @@
                 <div class="card-body">
                   <h6 class="card-subtitle mb-2 text-muted">
                     <%= comment.postedBy.username %> - 
-                    <%= comment.createdAt.toLocaleDateString() %>
+                    <%= comment.createdAt.toLocaleString('tr-TR') %>
+
                   </h6>
                   <p class="card-text"><%= comment.text %></p>
                 </div>
