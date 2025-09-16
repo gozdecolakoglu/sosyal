@@ -9,6 +9,7 @@ import userRoute from './routes/userRoute.js';
 import { checkUser } from './middlewares/authMiddleware.js';
 import fileUpload from 'express-fileupload';
 import { v2 as cloudinary } from 'cloudinary';
+import messageRoute from './routes/messagesRoute.js';
 
 dotenv.config();
 
@@ -50,6 +51,7 @@ app.use('*', checkUser);
 app.use('/', pageRoute);
 app.use('/photos', photoRoute);
 app.use('/users', userRoute);
+app.use('/messages', messageRoute);
 
 app.listen(port, () => {
     console.log('application running on port: ${port}');

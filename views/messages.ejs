@@ -1,0 +1,15 @@
+<%- include("partials/_header") %>
+<%- include("partials/_menu") %>
+
+<div class="container mt-4">
+  <h2>Messages</h2>
+  <ul class="list-group">
+    <% users.forEach(user => { %>
+      <li class="list-group-item">
+        <a href="/messages/<%= user._id %>"><%= user.username %></a>
+      </li>
+    <% }) %>
+  </ul>
+</div>
+
+<%- include("partials/_footer") %>
