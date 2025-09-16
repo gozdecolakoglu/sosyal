@@ -1083,3 +1083,21 @@ ul.social_icon_bottom li a i:hover {
   .emoji-options label {
     display: inline-block;
   }
+  /* public/css/style.css */
+.message-sent {
+  max-width: 70%;
+  background-color: #0d6efd;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.message-received {
+  max-width: 70%;
+  background-color: #f1f1f1;
+  color: black;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+}

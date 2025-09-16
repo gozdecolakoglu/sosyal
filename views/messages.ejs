@@ -1,15 +1,21 @@
 <%- include("partials/_header") %>
 <%- include("partials/_menu") %>
 
-<div class="container mt-4">
-  <h2>Messages</h2>
-  <ul class="list-group">
-    <% users.forEach(user => { %>
-      <li class="list-group-item">
-        <a href="/messages/<%= user._id %>"><%= user.username %></a>
-      </li>
-    <% }) %>
-  </ul>
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Messages</h2>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <ul class="list-group">
+        <% users.forEach(user => { %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span><i class="fa fa-user me-2"></i> <%= user.username %></span>
+            <a href="/messages/<%= user._id %>" class="btn btn-sm btn-primary">Chat</a>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
 </div>
 
 <%- include("partials/_footer") %>
