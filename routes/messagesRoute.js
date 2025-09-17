@@ -7,10 +7,30 @@ const router = express.Router();
 
 // Kullanıcıların listesini göster
 router.get("/", authenticateToken, async (req, res) => {
-  const users = await User.find({ _id: { $ne: res.locals.user._id } });
-res.render("messages", { users, link: "messages" });
+  const userId = res.locals.user._id;
+  // Tüm kullanıcılar
+  const allUsers = await User.find({ _id: { $ne: userId } });
 
+  // Mesajlaştıkları
+  const messages = await Message.find({
+    $or: [{ from: userId }, { to: userId }]
+  }).populate("from to", "username");
+
+  const usersSet = new Map();
+  messages.forEach(msg => {
+    if (String(msg.from._id) !== String(userId)) {
+      usersSet.set(msg.from._id, msg.from);
+    }
+    if (String(msg.to._id) !== String(userId)) {
+      usersSet.set(msg.to._id, msg.to);
+    }
+  });
+
+  const conversationUsers = Array.from(usersSet.values());
+
+  res.render("messages", { users: allUsers, conversationUsers, link: "messages" });
 });
+
 
 // Belirli bir kullanıcı ile olan mesajları listele
 router.get("/:id", authenticateToken, async (req, res) => {

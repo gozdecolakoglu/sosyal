@@ -4,10 +4,27 @@
 <div class="container mt-5">
   <h2 class="mb-4 text-center">Messages</h2>
 
+  <!-- Butonlar -->
+  <div class="text-center mb-3">
+    <button class="btn btn-secondary btn-sm" onclick="showList('all')">Tüm Kullanıcılar</button>
+    <button class="btn btn-primary btn-sm" onclick="showList('conversations')">Sadece Mesajlaştıklarım</button>
+  </div>
+
   <div class="card shadow-sm">
     <div class="card-body">
-      <ul class="list-group">
+      <!-- Tüm kullanıcılar -->
+      <ul id="allUsersList" class="list-group">
         <% users.forEach(user => { %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span><i class="fa fa-user me-2"></i> <%= user.username %></span>
+            <a href="/messages/<%= user._id %>" class="btn btn-sm btn-primary">Chat</a>
+          </li>
+        <% }) %>
+      </ul>
+
+      <!-- Sadece mesajlaştıkların -->
+      <ul id="conversationUsersList" class="list-group" style="display:none;">
+        <% conversationUsers.forEach(user => { %>
           <li class="list-group-item d-flex justify-content-between align-items-center">
             <span><i class="fa fa-user me-2"></i> <%= user.username %></span>
             <a href="/messages/<%= user._id %>" class="btn btn-sm btn-primary">Chat</a>
@@ -17,5 +34,12 @@
     </div>
   </div>
 </div>
+
+<script>
+  function showList(type) {
+    document.getElementById("allUsersList").style.display = (type === 'all') ? 'block' : 'none';
+    document.getElementById("conversationUsersList").style.display = (type === 'conversations') ? 'block' : 'none';
+  }
+</script>
 
 <%- include("partials/_footer") %>
