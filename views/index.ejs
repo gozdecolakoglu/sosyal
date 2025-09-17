@@ -11,39 +11,86 @@
          <%- include("partials/_menu") %>
          <!-- end header inner -->
          <!-- top -->
-      <div class="full_bg bt_fe">
-         <div class="slider_main">
-          <div class="container-fluid">
-            <div class="row d_flex">
-              <div class="col-md-5">
-                <div class="creative">
-                  <h1>ADD BEST PHOTOS</h1>
-                <a class="read_more" href="<%= user ? 'users/dashboard' : '/register' %>"> Join </a>
-                </div>
-              </div>
-              <div class="col-md-7">
-            <!-- carousel code -->
-            <div id="banner1" class="carousel slide">
-               <ol class="carousel-indicators">
-                  <li data-target="#banner1" data-slide-to="0" class="active"></li>
-                <!--   <li data-target="#banner1" data-slide-to="1"></li>
-                  <li data-target="#banner1" data-slide-to="2"></li> -->
-               </ol>
-               <div class="carousel-inner">
-                  <!-- first slide -->
-                  <div class="carousel-item active">
-                     <div class="container">
-                        <div class="carousel-caption relative">
-                           <div class="row d_flex">
-                              <div class="col-md-12">
-                                 <div class="cemara">
-                                  <figure><img src="images/img.png" alt="#"/></figure>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+ <!-- Modern Banner -->
+<div class="modern-banner">
+  <div class="banner-content">
+    <h1>ADD BEST PHOTOS</h1>
+    <a class="btn-join" href="<%= user ? 'users/dashboard' : '/register' %>">Join</a>
+  </div>
+  <div class="banner-image">
+    <img src="images/img.png" alt="Banner Image">
+  </div>
+</div>
+
+<style>
+  .modern-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px 5%;
+    background: linear-gradient(to right, #faf6f8, #53358d), url('images/banner-bg.jpg') center/cover no-repeat;
+    color: white;
+    border-radius: 12px;
+    margin-bottom: 50px;
+  }
+
+  .modern-banner .banner-content {
+    flex: 1 1 45%;
+    z-index: 2;
+  }
+
+  .modern-banner h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .modern-banner .btn-join {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #f6388e;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .modern-banner .btn-join:hover {
+    background-color: #53358d;
+    transform: scale(1.05);
+  }
+
+  .modern-banner .banner-image {
+    flex: 1 1 50%;
+    text-align: center;
+  }
+
+  .modern-banner .banner-image img {
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  @media (max-width: 768px) {
+    .modern-banner {
+      flex-direction: column;
+      text-align: center;
+      padding: 30px 10px;
+    }
+
+    .modern-banner .banner-content, 
+    .modern-banner .banner-image {
+      flex: 1 1 100%;
+    }
+
+    .modern-banner h1 {
+      font-size: 2rem;
+    }
+  }
+</style>
+
             <!--       
                   <div class="carousel-item">
                      <div class="container">
