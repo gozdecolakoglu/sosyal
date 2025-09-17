@@ -8,29 +8,30 @@ const router = express.Router();
 // Kullanıcıların listesini göster
 router.get("/", authenticateToken, async (req, res) => {
   const userId = res.locals.user._id;
-  // Tüm kullanıcılar
+
+  // Tüm kullanıcılar (kendisi hariç)
   const allUsers = await User.find({ _id: { $ne: userId } });
 
-  // Mesajlaştıkları
+  // Kullanıcının mesajlaştığı mesajlar
   const messages = await Message.find({
     $or: [{ from: userId }, { to: userId }]
   }).populate("from to", "username");
 
-  const usersSet = new Map();
+  // Unique kullanıcıları map ile bul
+  const usersMap = new Map();
   messages.forEach(msg => {
     if (String(msg.from._id) !== String(userId)) {
-      usersSet.set(msg.from._id, msg.from);
+      usersMap.set(msg.from._id.toString(), msg.from);
     }
     if (String(msg.to._id) !== String(userId)) {
-      usersSet.set(msg.to._id, msg.to);
+      usersMap.set(msg.to._id.toString(), msg.to);
     }
   });
 
-  const conversationUsers = Array.from(usersSet.values());
+  const conversationUsers = Array.from(usersMap.values());
 
   res.render("messages", { users: allUsers, conversationUsers, link: "messages" });
 });
-
 
 // Belirli bir kullanıcı ile olan mesajları listele
 router.get("/:id", authenticateToken, async (req, res) => {
@@ -42,9 +43,7 @@ router.get("/:id", authenticateToken, async (req, res) => {
     ]
   }).populate("from to", "username").sort("createdAt");
 
-  res.render("messageDetail", { otherUser, messages,
-      link: "messages"  
-   });
+  res.render("messageDetail", { otherUser, messages, link: "messages" });
 });
 
 // Mesaj gönder

@@ -9,7 +9,7 @@
     <div id="messagesContainer" class="card-body" style="height:400px; overflow-y:auto;">
       <% messages.forEach(m => { %>
         <div class="<%= m.from._id.toString() === locals.user._id.toString() ? 'd-flex justify-content-end' : 'd-flex justify-content-start' %> mb-2">
-          <div class="<%= m.from._id.toString() === locals.user._id.toString() ? 'message-sent' : 'message-received' %> p-2 rounded" style="background-color: #f1f1f1;">
+          <div class="<%= m.from._id.toString() === locals.user._id.toString() ? 'message-sent' : 'message-received' %> p-2 rounded" >
             <strong><%= m.from.username %>:</strong> <%= m.text %>
           </div>
         </div>
@@ -39,7 +39,7 @@
       // Mesajı mesaj container'a ekle
       $('#messagesContainer').append(`
         <div class="d-flex justify-content-end mb-2">
-          <div class="message-sent p-2 rounded" style="background-color:#f1f1f1;">
+          <div class="message-sent p-2 rounded" >
             <strong><%= locals.user.username %>:</strong> ${messageText}
           </div>
         </div>
