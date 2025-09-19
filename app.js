@@ -30,8 +30,8 @@ app.set("view engine", 'ejs');
 
 //static files middleware
 app.use(express.static('public'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 app.use(fileUpload({ useTempFiles: true }));
 app.use(

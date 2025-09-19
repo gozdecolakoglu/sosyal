@@ -48,12 +48,13 @@ router.get("/:id", authenticateToken, async (req, res) => {
 
 // Mesaj gönder
 router.post("/:id", authenticateToken, async (req, res) => {
-  await Message.create({
+  const msg = await Message.create({
     from: res.locals.user._id,
     to: req.params.id,
     text: req.body.text
   });
-  res.redirect("/messages/" + req.params.id);
+ await msg.populate('from', 'username'); // opsiyonel
+res.json({ success: true, message: msg });
 });
 
 export default router;

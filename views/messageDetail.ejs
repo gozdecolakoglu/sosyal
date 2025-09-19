@@ -1,4 +1,4 @@
-<%- include("partials/_header") %>
+<%- include("partials/_header") %> 
 <%- include("partials/_menu") %>
 
 <div class="container mt-5">
@@ -10,7 +10,9 @@
       <% messages.forEach(m => { %>
         <div class="<%= m.from._id.toString() === locals.user._id.toString() ? 'd-flex justify-content-end' : 'd-flex justify-content-start' %> mb-2">
           <div class="<%= m.from._id.toString() === locals.user._id.toString() ? 'message-sent' : 'message-received' %> p-2 rounded">
-            <strong><%= m.from.username %>:</strong> <%= m.text %>
+            <strong><%= m.from.username %>:</strong>
+            <!-- NOTE: use unescaped output so HTML (img/video) renders -->
+            <div class="message-body"><%- m.text %></div>
             <div class="text-muted" style="font-size:0.75rem;">
               <%= new Date(m.createdAt).toLocaleString() %>
             </div>
@@ -21,8 +23,28 @@
 
     <!-- Mesaj gönderme formu -->
     <form id="chatForm" class="p-3">
-      <div class="input-group">
-        <input type="text" name="text" id="chatInput" class="form-control" placeholder="Type a message..." required>
+      <!-- Toolbar -->
+      <div class="mb-2">
+        <button type="button" class="btn btn-sm btn-light toolbar-btn" data-cmd="bold"><b>B</b></button>
+        <button type="button" class="btn btn-sm btn-light toolbar-btn" data-cmd="italic"><i>I</i></button>
+        <button type="button" class="btn btn-sm btn-light toolbar-btn" data-cmd="underline"><u>U</u></button>
+        <button type="button" class="btn btn-sm btn-light toolbar-btn" data-cmd="strikeThrough"><s>S</s></button>
+
+        <!-- Görsel / video ekleme butonu (gizli file input tetikliyor) -->
+        <input type="file" id="fileInput" accept="image/*,video/*" style="display:none" />
+        <button type="button" class="btn btn-sm btn-light" id="attachBtn">Attach</button>
+        <span id="attachHint" class="text-muted small ms-2">(Click Attach to add photo/video)</span>
+      </div>
+
+      <!-- Contenteditable editor -->
+      <div id="editor" contenteditable="true" class="border p-2 rounded" style="min-height:90px; max-height:180px; overflow:auto;">
+        <!-- placeholder benzeri davranış -->
+        <div class="editor-placeholder">Type a message...</div>
+      </div>
+
+      <!-- Gönderme butonu -->
+      <div class="input-group mt-2">
+        <input type="hidden" name="text" id="textHidden">
         <button type="submit" class="btn btn-primary">Send</button>
       </div>
     </form>
@@ -31,33 +53,121 @@
 
 <!-- jQuery (CDN) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-  $('#chatForm').submit(function(e){
-    e.preventDefault(); // Sayfa yenilenmesin
+  // placeholder yönetimi
+  const editor = document.getElementById('editor');
+  editor.addEventListener('focus', () => {
+    const ph = editor.querySelector('.editor-placeholder');
+    if (ph) ph.style.display = 'none';
+  });
+  editor.addEventListener('blur', () => {
+    const text = editor.innerText.trim();
+    if (!text && !editor.querySelector('img') && !editor.querySelector('video')) {
+      const ph = editor.querySelector('.editor-placeholder');
+      if (ph) ph.style.display = 'block';
+    }
+  });
 
-    const messageText = $('#chatInput').val();
-    if(!messageText) return;
-
-    $.post('/messages/<%= otherUser._id %>', { text: messageText }, function(data){
-      const now = new Date();
-      const formattedTime = now.toLocaleString();
-
-      // Mesajı mesaj container'a ekle
-      $('#messagesContainer').append(`
-        <div class="d-flex justify-content-end mb-2">
-          <div class="message-sent p-2 rounded">
-            <strong><%= locals.user.username %>:</strong> ${messageText}
-            <div class="text-muted" style="font-size:0.75rem;">${formattedTime}</div>
-          </div>
-        </div>
-      `);
-
-      // Scroll en alta
-      $('#messagesContainer').scrollTop($('#messagesContainer')[0].scrollHeight);
-
-      // Input temizle
-      $('#chatInput').val('');
+  // toolbar butonları (execCommand - basit ve çok yaygın destekli)
+  document.querySelectorAll('.toolbar-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cmd = btn.getAttribute('data-cmd');
+      document.execCommand(cmd, false, null);
+      editor.focus();
     });
+  });
+
+  // Attach butonu tetikleyip file input'u ele alacağız
+  document.getElementById('attachBtn').addEventListener('click', () => {
+    document.getElementById('fileInput').click();
+  });
+
+  document.getElementById('fileInput').addEventListener('change', function(e) {
+    const file = this.files[0];
+    if (!file) return;
+
+    const allowedImage = file.type.startsWith('image/');
+    const allowedVideo = file.type.startsWith('video/');
+    const reader = new FileReader();
+
+    reader.onload = function(ev) {
+      const dataUrl = ev.target.result;
+      let html = '';
+      if (allowedImage) {
+        // küçük bir alt etiketi ekleyebiliriz
+        html = `<div><img src="${dataUrl}" alt="attachment" /></div><br/>`;
+      } else if (allowedVideo) {
+        // autoplay/devre dışı bırakılmış; controls ekliyoruz
+        html = `<div><video controls><source src="${dataUrl}" type="${file.type}">Tarayıcı video formatını desteklemiyor.</video></div><br/>`;
+      } else {
+        alert('Sadece resim veya video yükleyebilirsiniz.');
+        return;
+      }
+
+      // HTML ekle
+      document.execCommand('insertHTML', false, html);
+      editor.focus();
+    };
+
+    // Dosyayı base64 olarak oku (küçük dosyalar için uygundur)
+    // Not: Büyük dosyalar kullanıcı deneyimini bozabilir; bu en basit çözüm.
+    reader.readAsDataURL(file);
+
+    // input'u resetle ki aynı dosya tekrar eklenebilsin
+    this.value = '';
+  });
+
+  // Form gönderme (AJAX)
+  $('#chatForm').submit(function(e){
+    e.preventDefault();
+
+    // Editor içeriğini al
+    const htmlContent = editor.innerHTML.trim();
+    // Eğer sadece placeholder ya da boşsa çık
+    if (!htmlContent || htmlContent === '<div class="editor-placeholder">Type a message...</div>') return;
+
+    // Hidden inputa koy
+    $('#textHidden').val(htmlContent);
+
+    const otherId = '<%= otherUser._id %>';
+
+    // Basit AJAX POST (server mevcut /messages/:id route'unu kullanır)
+    $.ajax({
+      url: '/messages/' + otherId,
+      method: 'POST',
+      data: { text: htmlContent },
+      success: function(data){
+        // Şu anda server redirect dönebilir; biz yine de yeni mesajı ekliyoruz
+        const now = new Date();
+        const formattedTime = now.toLocaleString();
+
+        // Mesajı mesaj container'a ekle (HTML içeriğini kullan)
+        $('#messagesContainer').append(`
+          <div class="d-flex justify-content-end mb-2">
+            <div class="message-sent p-2 rounded">
+              <strong><%= locals.user.username %>:</strong>
+              <div class="message-body">${htmlContent}</div>
+              <div class="text-muted" style="font-size:0.75rem;">${formattedTime}</div>
+            </div>
+          </div>
+        `);
+
+        // Scroll en alta
+        $('#messagesContainer').scrollTop($('#messagesContainer')[0].scrollHeight);
+
+        // Editor temizle
+        editor.innerHTML = '<div class="editor-placeholder">Type a message...</div>';
+      },
+      error: function(err){
+        alert('Mesaj gönderilemedi.');
+      }
+    });
+  });
+
+  // Sayfa yüklendiğinde scroll en alta
+  $(document).ready(function(){
+    $('#messagesContainer').scrollTop($('#messagesContainer')[0].scrollHeight);
   });
 </script>
 
