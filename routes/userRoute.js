@@ -28,16 +28,5 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
   });
   router.use(methodOverride('_method'));
-  router
-  .route('/profile/avatar')
-  .put(
-    authMiddleware.authenticateToken,
-    upload.single('avatar'),
-    userController.updateAvatar
-  )
-  .delete(
-    authMiddleware.authenticateToken,
-    userController.deleteAvatar
-  );
-
+  
 export default router;
