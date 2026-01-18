@@ -20,7 +20,7 @@ router.get("/", authenticateToken, async (req, res) => {
   // Unique kullanıcıları map ile bul
   const usersMap = new Map();
   messages.forEach(msg => {
-    if (String(msg.from._id) !== String(userId)) {
+    if (msg.from && String(msg.from._id) !== String(userId)) {
       usersMap.set(msg.from._id.toString(), msg.from);
     }
     if (String(msg.to._id) !== String(userId)) {

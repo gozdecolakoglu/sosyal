@@ -138,11 +138,10 @@
             <% photo.comments.slice().sort((a, b) => b.createdAt - a.createdAt).forEach(comment => { %>
               <div class="card mb-3">
                 <div class="card-body">
-                  <h6 class="card-subtitle mb-2 text-muted">
-                    <%= comment.postedBy.username %> - 
-                    <%= comment.createdAt.toLocaleString('tr-TR') %>
-
-                  </h6>
+                 <h6 class="card-subtitle mb-2 text-muted">
+  <%= (comment.postedBy && comment.postedBy.username) ? comment.postedBy.username : 'Bilinmeyen Kullanıcı' %> - 
+  <%= comment.createdAt.toLocaleString('tr-TR') %>
+</h6>
                   <p class="card-text"><%= comment.text %></p>
                 </div>
               </div>
