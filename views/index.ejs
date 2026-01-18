@@ -1,18 +1,7 @@
 <%- include("partials/_header") %>
-   <!-- body -->
    <body class="main-layout">
-      <!-- loader  -->
-       <!--  <div class="loader_bg">
-         <div class="loader"><img src="images/loading.gif" alt="#"/></div>
-      </div>-->
-      <!-- end loader -->
-     
-         <!-- header -->
-         <%- include("partials/_menu") %>
-         <!-- end header inner -->
-         <!-- top -->
- <!-- Modern Banner -->
-<div class="modern-banner">
+      <%- include("partials/_menu") %>
+         <div class="modern-banner">
   <div class="banner-content">
     <h1>ADD BEST PHOTOS</h1>
     <a class="btn-join" href="<%= user ? 'users/dashboard' : '/register' %>">Join</a>
@@ -91,44 +80,6 @@
   }
 </style>
 
-            <!--       
-                  <div class="carousel-item">
-                     <div class="container">
-                        <div class="carousel-caption relative">
-                           <div class="row d_flex">
-                             <div class="col-md-12">
-                                 <div class="cemara">
-                                  <figure><img src="images/img.png" alt="#"/></figure>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                
-                  <div class="carousel-item">
-                     <div class="container">
-                        <div class="carousel-caption relative">
-                           <div class="row d_flex">
-                             <div class="col-md-12">
-                                  <div class="cemara">
-                                  <figure><img src="images/img.png" alt="#"/></figure>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div> -->
-               <!-- controls -->
-            <!--    <a class="carousel-control-prev" href="#banner1" role="button" data-slide="prev">
-               <i class="fa fa-arrow-left" aria-hidden="true"></i>
-               <span class="sr-only">Previous</span>
-               </a>
-               <a class="carousel-control-next" href="#banner1" role="button" data-slide="next">
-               <i class="fa fa-arrow-right" aria-hidden="true"></i>
-               <span class="sr-only">Next</span>
-               </a> -->
             </div>
           </div>
         </div>
@@ -136,8 +87,6 @@
          </div>
       </div>
    </div>
-      <!-- end banner -->
-      <!-- gallery -->
       <div class="gallery">
          <div class="container_with">
             <div class="row">
@@ -157,7 +106,7 @@
                            <img src="<%= photo.url %>" alt="<%= photo.name %>">
                            <div class="view_main">
                               <div class="pose">
-                                 <a class="read_more" href="<%= photo.url %>"><img src="images/ga.png" alt="#" /></a>
+                                 <a class="read_more" href="/photos/<%= photo._id %>"><img src="images/ga.png" alt="#" /></a>
                                  <p>
                                     <%= photo.description.substring(0, 80)+ "..." %>
                                  </p>
@@ -166,16 +115,12 @@
                         </div>
                      </div>
 
-
-                     <% } %>
+                  <% } %>
 
                </div>
             </div>
          </div>
       </div>
-      <!-- end gallery -->
-
-      <!-- team -->
       <div class="team">
          <div class="container_with">
             <div class="row">
@@ -203,43 +148,4 @@
             </div>
          </div>
       </div>
-      <!-- end team -->
-<!--       <% if (user) { %>
-         <div class="emoji-question-container text-center my-5">
-           <h3 class="mb-4">🗨️ How are you feeling today?</h3>
-           <form action="/emoji-response" method="POST">
-             <div class="emoji-options d-flex justify-content-center flex-wrap gap-3 mb-3">
-               <label>
-                 <input type="radio" name="emoji" value="👍" required hidden />
-                 <span class="emoji-btn">👍</span>
-               </label>
-               <label>
-                 <input type="radio" name="emoji" value="👎" hidden />
-                 <span class="emoji-btn">👎</span>
-               </label>
-               <label>
-                 <input type="radio" name="emoji" value="😄" hidden />
-                 <span class="emoji-btn">😄</span>
-               </label>
-               <label>
-                 <input type="radio" name="emoji" value="🤩" hidden />
-                 <span class="emoji-btn">🤩</span>
-               </label>
-               <label>
-                 <input type="radio" name="emoji" value="😔" hidden />
-                 <span class="emoji-btn">😔</span>
-               </label>
-               <label>
-                 <input type="radio" name="emoji" value="😡" hidden />
-                 <span class="emoji-btn">😡</span>
-               </label>
-             </div>
-             <button class="btn btn-primary">Submit</button>
-           </form>
-         </div>
-         <% } %> -->
-         
-         
-
-      <!-- end footer -->
       <%- include("partials/_footer") %>
