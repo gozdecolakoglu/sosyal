@@ -47,8 +47,8 @@ app.use(async (req, res, next) => {
     await conn();
     return next();
   } catch (error) {
-    console.error('DB connection error:', error.message);
-    return res.status(500).send('Database connection failed. Check DB_URL / MONGODB_URI / MONGO_URI env vars.');
+    console.error('DB connection error:', error);
+    return res.status(500).send('Database connection failed. Check Mongo env vars and URI format.');
   }
 });
 

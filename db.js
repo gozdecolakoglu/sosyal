@@ -1,15 +1,29 @@
 import mongoose from 'mongoose';
 let cachedConnectionPromise = null;
 
+const DB_ENV_KEYS = ['DB_URL', 'MONGODB_URI', 'MONGO_URI', 'DATABASE_URL', 'MONGODB_URL'];
+
+const sanitizeUri = (value = '') => value.trim().replace(/^"(.*)"$/, '$1').replace(/^'(.*)'$/, '$1');
+
 const getDatabaseUri = () => {
-  return process.env.DB_URL || process.env.MONGODB_URI || process.env.MONGO_URI || '';
+  for (const key of DB_ENV_KEYS) {
+    const raw = process.env[key];
+    if (raw && raw.trim()) {
+      return { key, uri: sanitizeUri(raw) };
+    }
+  }
+  return { key: null, uri: '' };
 };
 
 const conn = async () => {
-  const dbUri = getDatabaseUri();
+  const { key: usedKey, uri: dbUri } = getDatabaseUri();
 
   if (!dbUri) {
-    throw new Error('Missing DB connection string. Set DB_URL, MONGODB_URI, or MONGO_URI.');
+    throw new Error(`Missing DB connection string. Set one of: ${DB_ENV_KEYS.join(', ')}`);
+  }
+
+  if (!/^mongodb(\+srv)?:\/\//.test(dbUri)) {
+    throw new Error(`Invalid Mongo URI in ${usedKey}. It must start with mongodb:// or mongodb+srv://`);
   }
 
   if (mongoose.connection.readyState >= 1) {
@@ -17,10 +31,15 @@ const conn = async () => {
   }
 
   if (!cachedConnectionPromise) {
+    const connectOptions = {
+      serverSelectionTimeoutMS: 10000,
+      ...(process.env.DB_NAME ? { dbName: process.env.DB_NAME } : {}),
+    };
+
     cachedConnectionPromise = mongoose
-      .connect(dbUri, process.env.DB_NAME ? { dbName: process.env.DB_NAME } : {})
+      .connect(dbUri, connectOptions)
       .then((mongooseInstance) => {
-        console.log('Connected to the DB succesully');
+        console.log(`Connected to MongoDB successfully via ${usedKey}`);
         return mongooseInstance.connection;
       })
       .catch((err) => {
