@@ -32,8 +32,61 @@
                                  <button class="send_btn">Login</button>
                               </div>
                            </div>
+                           <div class="col-md-12">
+                              <div style="display: none;" class="alert alert-danger" id="loginError"></div>
+                           </div>
                         </div>
                      </form>
+                     <script>
+                        const form = document.querySelector('form#request');
+                        const loginError = document.querySelector('#loginError');
+
+                        form.addEventListener('submit', async (e) => {
+                           e.preventDefault();
+
+                           loginError.textContent = "";
+                           loginError.style.display = "none";
+
+                           const username = form.username.value;
+                           const password = form.password.value;
+
+                           try {
+                              const res = await fetch('users/login', {
+                                 method: "POST",
+                                 body: JSON.stringify({ username, password }),
+                                 headers: { "Content-Type": "application/json" }
+                              });
+
+                              const contentType = res.headers.get('content-type') || '';
+                              if (contentType.includes('application/json')) {
+                                 const data = await res.json();
+
+                                 if (data?.succeded || data?.succeeded) {
+                                    location.assign(data?.redirect || '/users/dashboard');
+                                    return;
+                                 }
+
+                                 if (data?.error) {
+                                    loginError.textContent = data.error;
+                                    loginError.style.display = "block";
+                                    return;
+                                 }
+                              }
+
+                              // Fallback: if server did a redirect / returned HTML
+                              if (res.ok) {
+                                 location.assign('/users/dashboard');
+                              } else {
+                                 loginError.textContent = "kullanıcı adı ve ya şifre hatalıdır";
+                                 loginError.style.display = "block";
+                              }
+                           } catch (err) {
+                              console.log("ERR::", err);
+                              loginError.textContent = "kullanıcı adı ve ya şifre hatalıdır";
+                              loginError.style.display = "block";
+                           }
+                        });
+                     </script>
                   </div>
                </div>
             </div>

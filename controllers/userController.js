@@ -31,40 +31,34 @@ const loginUser = async (req, res) => {
     const { username, password } = req.body;
 
     const user = await User.findOne({ username });
-    let same = false;
+    const same = user ? await bcrypt.compare(password, user.password) : false;
 
-    if (user) {
-      same = await bcrypt.compare(password, user.password);
-      
-    } else {
-
+    // Kullanıcı adı veya şifre hatalıysa tek bir mesaj döndür
+    if (!user || !same) {
       return res.status(401).json({
         succeded: false,
-        error: 'There is no such user',
+        succeeded: false,
+        error: 'kullanıcı adı ve ya şifre hatalıdır',
       });
     }
 
-    if (same) {
-      const token = createToken(user._id);
-      res.cookie('jwt', token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24,
-      });
+    const token = createToken(user._id);
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24,
+    });
 
-      
-      res.redirect('/users/dashboard');
-
-    } else {
-      res.status(401).json({
-        succeded: false,
-        error: 'Paswords are not matched try again',
-      });
-    }
+    return res.status(200).json({
+      succeded: true,
+      succeeded: true,
+      redirect: '/users/dashboard',
+    });
 
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       succeded: false,
-      error,
+      succeeded: false,
+      error: 'Sunucu hatası',
     });
   }
 };
