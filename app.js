@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import conn from "./db.js";
 import cookieParser from 'cookie-parser';
 import methodOverride from 'method-override';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import pageRoute from './routes/pageRoute.js';
 import photoRoute from './routes/photoRoute.js';
 import userRoute from './routes/userRoute.js';
@@ -23,13 +25,15 @@ cloudinary.config({
 conn();
 
 const app = express();
-const port = process.env.PORT;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 //ejs template engine
 app.set("view engine", 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 //static files middleware
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
@@ -53,6 +57,4 @@ app.use('/photos', photoRoute);
 app.use('/users', userRoute);
 app.use('/messages', messageRoute);
 
-app.listen(port, () => {
-    console.log('application running on port: ${port}');
-});
+export default app;
