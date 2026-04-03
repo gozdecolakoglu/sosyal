@@ -1,7 +1,6 @@
 import express from 'express';
 import * as userController from '../controllers/userController.js';
 import * as authMiddleware from '../middlewares/authMiddleware.js';
-import multer from 'multer';
 import methodOverride from 'method-override';
 
 const router = express.Router();
@@ -22,11 +21,6 @@ router
 router
   .route('/:id/unfollow')
   .put(authMiddleware.authenticateToken, userController.unfollow);
+router.use(methodOverride('_method'));
 
-const upload = multer({ 
-    dest: 'uploads/',
-    limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
-  });
-  router.use(methodOverride('_method'));
-  
 export default router;
