@@ -48,7 +48,7 @@ app.use(async (req, res, next) => {
     return next();
   } catch (error) {
     console.error('DB connection error:', error.message);
-    return res.status(500).send('Database connection failed. Check Vercel env vars.');
+    return res.status(500).send('Database connection failed. Check DB_URL / MONGODB_URI / MONGO_URI env vars.');
   }
 });
 

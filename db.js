@@ -1,9 +1,15 @@
 import mongoose from 'mongoose';
 let cachedConnectionPromise = null;
 
+const getDatabaseUri = () => {
+  return process.env.DB_URL || process.env.MONGODB_URI || process.env.MONGO_URI || '';
+};
+
 const conn = async () => {
-  if (!process.env.DB_URL) {
-    throw new Error('DB_URL is missing');
+  const dbUri = getDatabaseUri();
+
+  if (!dbUri) {
+    throw new Error('Missing DB connection string. Set DB_URL, MONGODB_URI, or MONGO_URI.');
   }
 
   if (mongoose.connection.readyState >= 1) {
@@ -12,9 +18,7 @@ const conn = async () => {
 
   if (!cachedConnectionPromise) {
     cachedConnectionPromise = mongoose
-      .connect(process.env.DB_URL, {
-        dbName: 'sosyal',
-      })
+      .connect(dbUri, process.env.DB_NAME ? { dbName: process.env.DB_NAME } : {})
       .then((mongooseInstance) => {
         console.log('Connected to the DB succesully');
         return mongooseInstance.connection;
