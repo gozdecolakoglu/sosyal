@@ -1,20 +1,30 @@
 import mongoose from 'mongoose';
-const conn = () => {
-  if (mongoose.connection.readyState >= 1) {
-    return;
+let cachedConnectionPromise = null;
+
+const conn = async () => {
+  if (!process.env.DB_URL) {
+    throw new Error('DB_URL is missing');
   }
 
-  mongoose
-    .connect(process.env.DB_URL, {
-      dbName: 'sosyal',
-/*       useNewUrlParser: true,
-      useUnifiedTopology: true, */
-    })
-    .then(() => {
-      console.log('Connected to the DB succesully');
-    })
-    .catch((err) => {
-      console.log(`DB connection err: ${err}`);
-    });
+  if (mongoose.connection.readyState >= 1) {
+    return mongoose.connection;
+  }
+
+  if (!cachedConnectionPromise) {
+    cachedConnectionPromise = mongoose
+      .connect(process.env.DB_URL, {
+        dbName: 'sosyal',
+      })
+      .then((mongooseInstance) => {
+        console.log('Connected to the DB succesully');
+        return mongooseInstance.connection;
+      })
+      .catch((err) => {
+        cachedConnectionPromise = null;
+        throw err;
+      });
+  }
+
+  return cachedConnectionPromise;
 };
 export default conn;

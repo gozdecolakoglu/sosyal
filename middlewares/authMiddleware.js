@@ -5,19 +5,25 @@ const checkUser = async (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
-      if (err) {
-        console.log(err.message);
-        res.locals.user = null;
-        next();
-      } else {
+      try {
+        if (err) {
+          console.log(err.message);
+          res.locals.user = null;
+          return next();
+        }
+
         const user = await User.findById(decodedToken.userId);
         res.locals.user = user;
-        next();
+        return next();
+      } catch (error) {
+        console.log(error.message);
+        res.locals.user = null;
+        return next();
       }
     });
   } else {
     res.locals.user = null;
-    next();
+    return next();
   }
 };
 

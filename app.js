@@ -21,9 +21,6 @@ cloudinary.config({
     api_secret: process.env.CLOUD_API_SECRET,
   });
 
-//connection to the db
-conn();
-
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,6 +41,17 @@ app.use(
     })
   );
 
+// Ensure DB is connected per invocation in serverless.
+app.use(async (req, res, next) => {
+  try {
+    await conn();
+    return next();
+  } catch (error) {
+    console.error('DB connection error:', error.message);
+    return res.status(500).send('Database connection failed. Check Vercel env vars.');
+  }
+});
+
 /* app.get("/", (req, res) => {
     res.render("index");
 });
@@ -56,5 +64,13 @@ app.use('/', pageRoute);
 app.use('/photos', photoRoute);
 app.use('/users', userRoute);
 app.use('/messages', messageRoute);
+
+app.use((err, req, res, next) => {
+  console.error('Unhandled app error:', err);
+  if (res.headersSent) {
+    return next(err);
+  }
+  return res.status(500).send('Internal server error');
+});
 
 export default app;
