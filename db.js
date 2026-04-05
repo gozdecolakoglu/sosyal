@@ -33,7 +33,7 @@ const conn = async () => {
   if (!cachedConnectionPromise) {
     const connectOptions = {
       serverSelectionTimeoutMS: 10000,
-      ...(process.env.DB_NAME ? { dbName: process.env.DB_NAME } : {}),
+      dbName: process.env.DB_NAME || 'sosyal',
     };
 
     cachedConnectionPromise = mongoose

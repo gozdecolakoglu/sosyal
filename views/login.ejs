@@ -1,96 +1,83 @@
 <%- include("partials/_header") %>
-   <!-- body -->
-   <body class="main-layout inner_page">
-      <!-- loader  -->
-      <!--  <div class="loader_bg">
-         <div class="loader"><img src="images/loading.gif" alt="#"/></div>
-      </div>-->
-      <!-- end loader -->
-      <!-- header -->
-      <%- include("partials/_menu") %>
-         <!-- end header inner -->
-         <!-- contact -->
-         <div class="contact">
-            <div class="container">
-               <div class="row">
-                  <div class="col-md-12 ">
-                     <div class="titlepage text_align_center">
-                        <h2>Login</h2>
-                     </div>
-                  </div>
-                  <div class="col-md-8 offset-md-2">
-                     <form id="request" class="main_form" action="users/login" method="POST">
-                        <div class="row">
-                           <div class="col-md-12">
-                              <input class="form_control" placeholder="Username" type="text" name="username">
-                           </div>
-                           <div class="col-md-12">
-                              <input class="form_control" placeholder="Password" type="password" name="password">
-                           </div>
-                           <div class="col-md-12">
-                              <div class="group_form">
-                                 <button class="send_btn">Login</button>
-                              </div>
-                           </div>
-                           <div class="col-md-12">
-                              <div style="display: none;" class="alert alert-danger" id="loginError"></div>
-                           </div>
-                        </div>
-                     </form>
-                     <script>
-                        const form = document.querySelector('form#request');
-                        const loginError = document.querySelector('#loginError');
+<body class="modern-body">
+    <%- include("partials/_menu") %>
 
-                        form.addEventListener('submit', async (e) => {
-                           e.preventDefault();
+    <main class="modern-container" style="display: flex; align-items: center; justify-content: center; min-height: 80vh;">
+        <div class="modern-card" style="width: 100%; max-width: 450px; padding: 3rem 2.5rem;">
+            <h2 class="text-center text-gradient mb-6" style="font-size: 2.25rem;">Welcome Back</h2>
+            <p class="text-center text-secondary mb-6">Log in to your account</p>
+            
+            <form id="request" action="users/login" method="POST">
+                <div class="modern-form-group">
+                    <label class="modern-label">Username</label>
+                    <input class="modern-input" placeholder="Enter your username" type="text" name="username" required>
+                </div>
+                <div class="modern-form-group mb-6">
+                    <label class="modern-label">Password</label>
+                    <input class="modern-input" placeholder="Enter your password" type="password" name="password" required>
+                </div>
+                
+                <div style="display: none; background-color: #fee2e2; color: #dc2626; padding: 0.75rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.875rem; text-align: center;" id="loginError"></div>
 
-                           loginError.textContent = "";
-                           loginError.style.display = "none";
+                <div class="modern-form-group">
+                    <button type="submit" class="modern-btn modern-btn-primary" style="width: 100%;">Login</button>
+                </div>
+            </form>
+            
+            <p class="text-center text-secondary mt-6" style="font-size: 0.875rem;">
+                Don't have an account? <a href="/register" class="text-primary" style="font-weight: 500;">Register here</a>
+            </p>
 
-                           const username = form.username.value;
-                           const password = form.password.value;
+            <script>
+                const form = document.querySelector('form#request');
+                const loginError = document.querySelector('#loginError');
 
-                           try {
-                              const res = await fetch('users/login', {
-                                 method: "POST",
-                                 body: JSON.stringify({ username, password }),
-                                 headers: { "Content-Type": "application/json" }
-                              });
+                form.addEventListener('submit', async (e) => {
+                   e.preventDefault();
 
-                              const contentType = res.headers.get('content-type') || '';
-                              if (contentType.includes('application/json')) {
-                                 const data = await res.json();
+                   loginError.textContent = "";
+                   loginError.style.display = "none";
 
-                                 if (data?.succeded || data?.succeeded) {
-                                    location.assign(data?.redirect || '/users/dashboard');
-                                    return;
-                                 }
+                   const username = form.username.value;
+                   const password = form.password.value;
 
-                                 if (data?.error) {
-                                    loginError.textContent = data.error;
-                                    loginError.style.display = "block";
-                                    return;
-                                 }
-                              }
+                   try {
+                      const res = await fetch('users/login', {
+                         method: "POST",
+                         body: JSON.stringify({ username, password }),
+                         headers: { "Content-Type": "application/json" }
+                      });
 
-                              // Fallback: if server did a redirect / returned HTML
-                              if (res.ok) {
-                                 location.assign('/users/dashboard');
-                              } else {
-                                 loginError.textContent = "kullanıcı adı ve ya şifre hatalıdır";
-                                 loginError.style.display = "block";
-                              }
-                           } catch (err) {
-                              console.log("ERR::", err);
-                              loginError.textContent = "kullanıcı adı ve ya şifre hatalıdır";
-                              loginError.style.display = "block";
-                           }
-                        });
-                     </script>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <!-- end contact -->
-         <!-- end footer -->
-         <%- include("partials/_footer") %>
+                      const contentType = res.headers.get('content-type') || '';
+                      if (contentType.includes('application/json')) {
+                         const data = await res.json();
+
+                         if (data?.succeded || data?.succeeded) {
+                            location.assign(data?.redirect || '/users/dashboard');
+                            return;
+                         }
+
+                         if (data?.error) {
+                            loginError.textContent = data.error;
+                            loginError.style.display = "block";
+                            return;
+                         }
+                      }
+
+                      // Fallback: if server did a redirect / returned HTML
+                      if (res.ok) {
+                         location.assign('/users/dashboard');
+                      } else {
+                         loginError.textContent = "kullanıcı adı ve ya şifre hatalıdır";
+                         loginError.style.display = "block";
+                      }
+                   } catch (err) {
+                      console.log("ERR::", err);
+                      loginError.textContent = "kullanıcı adı ve ya şifre hatalıdır";
+                      loginError.style.display = "block";
+                   }
+                });
+             </script>
+        </div>
+    </main>
+<%- include("partials/_footer") %>

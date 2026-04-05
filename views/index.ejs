@@ -1,151 +1,48 @@
 <%- include("partials/_header") %>
-   <body class="main-layout">
-      <%- include("partials/_menu") %>
-         <div class="modern-banner">
-  <div class="banner-content">
-    <h1>ADD BEST PHOTOS</h1>
-    <a class="btn-join" href="<%= user ? 'users/dashboard' : '/register' %>">Join</a>
-  </div>
-  <div class="banner-image">
-    <img src="images/img.png" alt="Banner Image">
-  </div>
-</div>
-
-<style>
-  .modern-banner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    padding: 50px 5%;
-    background: linear-gradient(to right, #faf6f8, #53358d), url('images/banner-bg.jpg') center/cover no-repeat;
-    color: white;
-    border-radius: 12px;
-    margin-bottom: 50px;
-  }
-
-  .modern-banner .banner-content {
-    flex: 1 1 45%;
-    z-index: 2;
-  }
-
-  .modern-banner h1 {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-
-  .modern-banner .btn-join {
-    display: inline-block;
-    padding: 12px 30px;
-    background-color: #f6388e;
-    color: white;
-    font-weight: bold;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-
-  .modern-banner .btn-join:hover {
-    background-color: #53358d;
-    transform: scale(1.05);
-  }
-
-  .modern-banner .banner-image {
-    flex: 1 1 50%;
-    text-align: center;
-  }
-
-  .modern-banner .banner-image img {
-    max-width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  }
-
-  @media (max-width: 768px) {
-    .modern-banner {
-      flex-direction: column;
-      text-align: center;
-      padding: 30px 10px;
-    }
-
-    .modern-banner .banner-content, 
-    .modern-banner .banner-image {
-      flex: 1 1 100%;
-    }
-
-    .modern-banner h1 {
-      font-size: 2rem;
-    }
-  }
-</style>
-
+<body class="modern-body">
+    <%- include("partials/_menu") %>
+    
+    <main class="modern-container">
+        <!-- Hero Section -->
+        <section class="modern-card mt-8 mb-8" style="padding: 4rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; background: linear-gradient(to right, var(--bg-color), var(--surface-color));">
+            <div style="flex: 1 1 45%;">
+                <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 1.5rem;" class="text-gradient">Share your best moments.</h1>
+                <p class="text-secondary" style="font-size: 1.25rem; margin-bottom: 2rem;">Join the community, explore stunning photos, and connect with creative minds.</p>
+                <a class="modern-btn modern-btn-primary" style="font-size: 1.125rem; padding: 0.75rem 2rem;" href="<%= user ? 'users/dashboard' : '/register' %>">Get Started</a>
             </div>
-          </div>
-        </div>
-      </div>
-         </div>
-      </div>
-   </div>
-      <div class="gallery">
-         <div class="container_with">
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="titlepage text_align_left">
-                   <h2>Latest Photos</h2>
-                  </div>
-               </div>
+            <div style="flex: 1 1 50%; display: flex; justify-content: center; padding-top: 2rem;">
+                <img src="/images/img.png" alt="Hero" style="border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); max-width: 100%;">
             </div>
-            <div class="tz-gallery">
-               <div class="row">
+        </section>
 
-                  <% for (photo of photos) { %>
+        <!-- Stats Section -->
+        <section class="mb-8" style="display: flex; gap: 2rem; justify-content: center;">
+            <a href="/photos" class="modern-card" style="padding: 2rem; text-align: center; flex: 1; text-decoration: none;">
+                <h2 class="text-gradient" style="font-size: 2.5rem; margin: 0;"><%= numOfPhotos %></h2>
+                <p class="text-secondary" style="font-weight: 500; font-size: 1.125rem; margin: 0;">Total Photos</p>
+            </a>
+            <a href="/users" class="modern-card" style="padding: 2rem; text-align: center; flex: 1; text-decoration: none;">
+                <h2 class="text-gradient" style="font-size: 2.5rem; margin: 0;"><%= numOfUser %></h2>
+                <p class="text-secondary" style="font-weight: 500; font-size: 1.125rem; margin: 0;">Active Users</p>
+            </a>
+        </section>
 
-                     <div class="col-lg-4 col-md-6 ma_bottom30">
-                        <div class="lightbox">
-                           <img src="<%= photo.url %>" alt="<%= photo.name %>">
-                           <div class="view_main">
-                              <div class="pose">
-                                 <a class="read_more" href="/photos/<%= photo._id %>"><img src="images/ga.png" alt="#" /></a>
-                                 <p>
-                                    <%= photo.description.substring(0, 80)+ "..." %>
-                                 </p>
-                              </div>
-                           </div>
+        <!-- Gallery Section -->
+        <section class="mb-8">
+            <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Latest Photos</h2>
+            <p class="text-secondary mb-4">Discover what others are capturing around the world.</p>
+            
+            <div class="modern-photo-grid">
+                <% for (photo of photos) { %>
+                    <a href="/photos/<%= photo._id %>" class="modern-photo-card">
+                        <img src="<%= photo.url %>" alt="<%= photo.name %>">
+                        <div class="modern-photo-overlay">
+                            <p><%= photo.description.substring(0, 80) + "..." %></p>
                         </div>
-                     </div>
-
-                  <% } %>
-
-               </div>
+                    </a>
+                <% } %>
             </div>
-         </div>
-      </div>
-      <div class="team">
-         <div class="container_with">
-            <div class="row">
-               <div class="col-md-6">
-                  <div class="team_box text_align_center">
-                     <div class="craig"> <a href="/photos">
-                        <h3>
-                           <%= numOfPhotos %>
-                        </h3>
-                        <span>PHOTOGRAPHS</span></a>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-6">
-                  <div class="team_box text_align_center">
-                     <div class="craig"> <a href="/users">
-                        <h3>
-                           <%= numOfUser %>
-                        </h3>
-                        <span>USERS</span> </a>
-                     </div>
-                  </div>
-               </div>
-
-            </div>
-         </div>
-      </div>
-      <%- include("partials/_footer") %>
+        </section>
+    </main>
+    
+<%- include("partials/_footer") %>

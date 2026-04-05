@@ -1,102 +1,48 @@
 <%- include("partials/_header") %>
-  <!-- body -->
-  <body class="main-layout inner_page">
-    <!-- loader  -->
-    <!--  <div class="loader_bg">
-         <div class="loader"><img src="images/loading.gif" alt="#"/></div>
-      </div>-->
-    <!-- end loader -->
-    <!-- header -->
+<body class="modern-body">
     <%- include("partials/_menu") %>
-      <!-- end header inner -->
-      <!--  customers -->
-      <div class="customers">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="titlepage text_align_center">
-                <h2> <%= user.username %>
-                </h2>
-              </div>
-            </div>
-          </div>
-          <!--profil fotoğrafı -->    
-          <div class="satteb text_align_center">
-       <!--      <h5>Contact Me</h5>
-            <p><%= user.email %></p> buraya ileride mesaj gönder chat alanı eklenecektir-->
-            <div class="row">
-              <div class="col-md-12 text_align_center">
-                <i><img src="/images/profile_1.jpg" alt="#" /></i>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- end customers  -->
 
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="text_align_center">
-              <% if (!inFollowers) { %>
-                <a style="margin:20px auto;" class="read_more"
-                  href="/users/<%= user._id %>/follow?_method=PUT">FOLLOW</a>
+    <main class="modern-container mt-8 mb-8" style="min-height: 70vh;">
+        <!-- Header / Profile Info -->
+        <div class="modern-card p-6 mb-8" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <img src="/images/profile_1.jpg" alt="Profile Photo" class="modern-avatar-lg" style="border-radius: 50%; object-fit: cover; margin-bottom: 1.5rem;">
+            <h2 class="text-gradient" style="font-size: 2rem; margin-bottom: 1.5rem;"><%= user.username %></h2>
+            
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                <% if (!inFollowers) { %>
+                    <a href="/users/<%= user._id %>/follow?_method=PUT" class="modern-btn modern-btn-primary">
+                        <i class="fa fa-user-plus"></i>&nbsp;Follow
+                    </a>
                 <% } else { %>
-                  <a style="margin:20px auto;" class="read_more"
-                    href="/users/<%= user._id %>/unfollow?_method=PUT">UNFOLLOW</a>
-                  <% } %>
-                    <!-- CHAT BUTTON -->
-        <a style="margin:20px auto; display:block;" class="read_more"
-          href="/messages/<%= user._id %>">CHAT</a>
-      </div>
-    </div>
-  </div>
-</div>
-            </div>
-          </div>
-        </div>
-      </div>
-     
-      <div class="gallery">
-        <div class="container_with">
-          <div class="row">
-            <div class="col-md-12">
-              <% if (photos.length> 0 ) { %>
-              <div class="titlepage text_align_center">
-                <h2>My Photos</h2>
-              </div>
-              <%} %>
-            </div>
-          </div>
-          <div class="tz-gallery">
-            <div class="row">
-              <% for (photo of photos) { %>
-                <div class="col-lg-4 col-md-6 ma_bottom30">
-                  <div class="lightbox">
-                    <img src="<%= photo.url %>" alt="<%= photo.name %>">
-                    <div class="view_main">
-                      <div class="pose">
-                        <a class="read_more" href="/photos/<%= photo._id %>"><img src="/images/ga.png" alt="#" /></a>
-                        <h3 style="padding-top:10px; padding-bottom:10px">
-                          <%= photo.name %>
-                        </h3>
-                        <p style="padding-top:10px;">
-                          <%= photo.description.substring(0, 80)+ "..." %>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                    <a href="/users/<%= user._id %>/unfollow?_method=PUT" class="modern-btn modern-btn-outline">
+                        <i class="fa fa-user-times"></i>&nbsp;Unfollow
+                    </a>
                 <% } %>
                 
+                <a href="/messages/<%= user._id %>" class="modern-btn modern-btn-outline">
+                    <i class="fa fa-comments"></i>&nbsp;Chat
+                </a>
             </div>
-          </div>
         </div>
-      </div>
-      <!-- end footer -->
-      <%- include("partials/_footer") %>
 
+        <!-- User's Photos -->
+        <% if (photos.length > 0) { %>
+        <section class="mb-8">
+            <h3 class="mb-4" style="font-size: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;"><%= user.username %>'s Photos</h3>
+            <div class="modern-photo-grid">
+                <% for (photo of photos) { %>
+                    <a href="/photos/<%= photo._id %>" class="modern-photo-card">
+                        <img src="<%= photo.url %>" alt="<%= photo.name %>">
+                        <div class="modern-photo-overlay">
+                            <h4 style="color: white; font-size: 1.125rem; margin-bottom: 0.25rem;"><%= photo.name %></h4>
+                            <p><%= photo.description.substring(0, 80) + "..." %></p>
+                        </div>
+                    </a>
+                <% } %>
+            </div>
+        </section>
+        <% } %>
+
+    </main>
+
+<%- include("partials/_footer") %>

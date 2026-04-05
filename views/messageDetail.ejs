@@ -1,174 +1,160 @@
 <%- include("partials/_header") %> 
-<%- include("partials/_menu") %>
+<body class="modern-body">
+    <%- include("partials/_menu") %>
 
-<div class="container mt-5">
-  <h2 class="mb-4 text-center">Chat with <%= otherUser.username %></h2>
-
-  <div class="card shadow-sm">
-    <!-- Mesajlar -->
-    <div id="messagesContainer" class="card-body" style="height:400px; overflow-y:auto;">
-      <% messages.forEach(m => { %>
-        <div class="<%= m.from._id.toString() === locals.user._id.toString() ? 'd-flex justify-content-end' : 'd-flex justify-content-start' %> mb-2">
-          <div class="<%= m.from._id.toString() === locals.user._id.toString() ? 'message-sent' : 'message-received' %> p-2 rounded">
-            <strong><%= m.from.username %>:</strong>
-            <!-- NOTE: use unescaped output so HTML (img/video) renders -->
-            <div class="message-body"><%- m.text %></div>
-            <div class="text-muted" style="font-size:0.75rem;">
-              <%= new Date(m.createdAt).toLocaleString() %>
+    <main class="modern-container mt-8 mb-8" style="min-height: 70vh;">
+        <div class="modern-card" style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; height: 75vh;">
+            <!-- Chat Header -->
+            <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; background: var(--bg-color);">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="/images/team4.png" alt="Avatar" class="modern-avatar">
+                    <h2 style="margin: 0; font-size: 1.25rem;"><%= otherUser.username %></h2>
+                </div>
+                <a href="/users/<%= otherUser._id %>" class="modern-btn modern-btn-outline"><i class="fa fa-user"></i>&nbsp;Profile</a>
             </div>
-          </div>
+
+            <!-- Messages List -->
+            <div id="messagesContainer" style="flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; background: var(--surface-color);">
+                <% messages.forEach(m => { %>
+                    <% const isMe = m.from._id.toString() === locals.user._id.toString(); %>
+                    <div style="display: flex; justify-content: <%= isMe ? 'flex-end' : 'flex-start' %>; width: 100%;">
+                        <div style="max-width: 70%; padding: 1rem; border-radius: var(--radius-lg); <%= isMe ? 'background: var(--accent-gradient); color: white; border-bottom-right-radius: 0;' : 'background: var(--bg-color); border: 1px solid var(--border-color); border-bottom-left-radius: 0;' %>">
+                            <% if (!isMe) { %>
+                                <strong style="font-size: 0.875rem; opacity: 0.8; margin-bottom: 0.25rem; display: block;"><%= m.from.username %></strong>
+                            <% } %>
+                            <div class="message-body" style="word-break: break-word;"><%- m.text %></div>
+                            <div style="font-size: 0.7rem; opacity: 0.7; margin-top: 0.5rem; text-align: right;">
+                                <%= new Date(m.createdAt).toLocaleString() %>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+
+            <!-- Input Area -->
+            <div style="padding: 1.5rem; border-top: 1px solid var(--border-color); background: var(--bg-color);">
+                <form id="chatForm">
+                    <div class="modern-chat-toolbar" style="margin-bottom: 0.5rem;">
+                        <button type="button" class="modern-btn modern-btn-outline toolbar-btn" style="padding: 0.25rem 0.5rem;" data-cmd="bold"><b>B</b></button>
+                        <button type="button" class="modern-btn modern-btn-outline toolbar-btn" style="padding: 0.25rem 0.5rem;" data-cmd="italic"><i>I</i></button>
+                        <button type="button" class="modern-btn modern-btn-outline toolbar-btn" style="padding: 0.25rem 0.5rem;" data-cmd="underline"><u>U</u></button>
+                        <input type="file" id="fileInput" accept="image/*,video/*" style="display:none" />
+                        <button type="button" class="modern-btn modern-btn-outline" style="padding: 0.25rem 0.5rem;" id="attachBtn"><i class="fa fa-photo"></i></button>
+                    </div>
+
+                    <div class="modern-chat-input-row">
+                        <div id="editor" contenteditable="true" class="modern-input" style="flex: 1; min-height: 50px; max-height: 150px; overflow-y: auto; position: relative;">
+                            <div class="editor-placeholder" style="color: var(--text-secondary); pointer-events: none;">Type a message...</div>
+                        </div>
+                        <input type="hidden" name="text" id="textHidden">
+                        <button type="submit" class="modern-btn modern-btn-primary" style="height: auto; align-self: flex-end;">Send</button>
+                    </div>
+                </form>
+            </div>
         </div>
-      <% }) %>
-    </div>
+    </main>
 
-    <!-- Mesaj gönderme formu -->
-    <form id="chatForm" class="p-3">
-      <!-- Toolbar -->
-      <div class="mb-2">
-        <button type="button" class="btn btn-sm btn-light toolbar-btn" data-cmd="bold"><b>B</b></button>
-        <button type="button" class="btn btn-sm btn-light toolbar-btn" data-cmd="italic"><i>I</i></button>
-        <button type="button" class="btn btn-sm btn-light toolbar-btn" data-cmd="underline"><u>U</u></button>
-        <button type="button" class="btn btn-sm btn-light toolbar-btn" data-cmd="strikeThrough"><s>S</s></button>
+    <style>
+        .message-body img, .message-body video {
+            max-width: 100%;
+            border-radius: var(--radius-md);
+            margin-top: 0.5rem;
+        }
+    </style>
 
-        <!-- Görsel / video ekleme butonu (gizli file input tetikliyor) -->
-        <input type="file" id="fileInput" accept="image/*,video/*" style="display:none" />
-        <button type="button" class="btn btn-sm btn-light" id="attachBtn">Attach</button>
-        <span id="attachHint" class="text-muted small ms-2">(Click Attach to add photo/video)</span>
-      </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const editor = document.getElementById('editor');
+        editor.addEventListener('focus', () => {
+            const ph = editor.querySelector('.editor-placeholder');
+            if (ph) ph.style.display = 'none';
+        });
+        editor.addEventListener('blur', () => {
+            const text = editor.innerText.trim();
+            if (!text && !editor.querySelector('img') && !editor.querySelector('video')) {
+                const ph = editor.querySelector('.editor-placeholder');
+                if (ph) ph.style.display = 'block';
+            }
+        });
 
-      <!-- Contenteditable editor -->
-      <div id="editor" contenteditable="true" class="border p-2 rounded" style="min-height:90px; max-height:180px; overflow:auto;">
-        <!-- placeholder benzeri davranış -->
-        <div class="editor-placeholder">Type a message...</div>
-      </div>
+        document.querySelectorAll('.toolbar-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const cmd = btn.getAttribute('data-cmd');
+                document.execCommand(cmd, false, null);
+                editor.focus();
+            });
+        });
 
-      <!-- Gönderme butonu -->
-      <div class="input-group mt-2">
-        <input type="hidden" name="text" id="textHidden">
-        <button type="submit" class="btn btn-primary">Send</button>
-      </div>
-    </form>
-  </div>
-</div>
+        document.getElementById('attachBtn').addEventListener('click', () => {
+            document.getElementById('fileInput').click();
+        });
 
-<!-- jQuery (CDN) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (!file) return;
 
-<script>
-  // placeholder yönetimi
-  const editor = document.getElementById('editor');
-  editor.addEventListener('focus', () => {
-    const ph = editor.querySelector('.editor-placeholder');
-    if (ph) ph.style.display = 'none';
-  });
-  editor.addEventListener('blur', () => {
-    const text = editor.innerText.trim();
-    if (!text && !editor.querySelector('img') && !editor.querySelector('video')) {
-      const ph = editor.querySelector('.editor-placeholder');
-      if (ph) ph.style.display = 'block';
-    }
-  });
+            const allowedImage = file.type.startsWith('image/');
+            const allowedVideo = file.type.startsWith('video/');
+            const reader = new FileReader();
 
-  // toolbar butonları (execCommand - basit ve çok yaygın destekli)
-  document.querySelectorAll('.toolbar-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const cmd = btn.getAttribute('data-cmd');
-      document.execCommand(cmd, false, null);
-      editor.focus();
-    });
-  });
+            reader.onload = function(ev) {
+                const dataUrl = ev.target.result;
+                let html = '';
+                if (allowedImage) {
+                    html = `<div><img src="${dataUrl}" alt="attachment" /></div><br/>`;
+                } else if (allowedVideo) {
+                    html = `<div><video controls><source src="${dataUrl}" type="${file.type}">Browser does not support video.</video></div><br/>`;
+                } else {
+                    alert('Only image or video allowed.');
+                    return;
+                }
 
-  // Attach butonu tetikleyip file input'u ele alacağız
-  document.getElementById('attachBtn').addEventListener('click', () => {
-    document.getElementById('fileInput').click();
-  });
+                document.execCommand('insertHTML', false, html);
+                editor.focus();
+            };
 
-  document.getElementById('fileInput').addEventListener('change', function(e) {
-    const file = this.files[0];
-    if (!file) return;
+            reader.readAsDataURL(file);
+            this.value = '';
+        });
 
-    const allowedImage = file.type.startsWith('image/');
-    const allowedVideo = file.type.startsWith('video/');
-    const reader = new FileReader();
+        $('#chatForm').submit(function(e){
+            e.preventDefault();
 
-    reader.onload = function(ev) {
-      const dataUrl = ev.target.result;
-      let html = '';
-      if (allowedImage) {
-        // küçük bir alt etiketi ekleyebiliriz
-        html = `<div><img src="${dataUrl}" alt="attachment" /></div><br/>`;
-      } else if (allowedVideo) {
-        // autoplay/devre dışı bırakılmış; controls ekliyoruz
-        html = `<div><video controls><source src="${dataUrl}" type="${file.type}">Tarayıcı video formatını desteklemiyor.</video></div><br/>`;
-      } else {
-        alert('Sadece resim veya video yükleyebilirsiniz.');
-        return;
-      }
+            const htmlContent = editor.innerHTML.trim();
+            if (!htmlContent || htmlContent === '<div class="editor-placeholder">Type a message...</div>') return;
 
-      // HTML ekle
-      document.execCommand('insertHTML', false, html);
-      editor.focus();
-    };
+            $('#textHidden').val(htmlContent);
 
-    // Dosyayı base64 olarak oku (küçük dosyalar için uygundur)
-    // Not: Büyük dosyalar kullanıcı deneyimini bozabilir; bu en basit çözüm.
-    reader.readAsDataURL(file);
+            const otherId = '<%= otherUser._id %>';
 
-    // input'u resetle ki aynı dosya tekrar eklenebilsin
-    this.value = '';
-  });
+            $.ajax({
+                url: '/messages/' + otherId,
+                method: 'POST',
+                data: { text: htmlContent },
+                success: function(data){
+                    const now = new Date();
+                    const formattedTime = now.toLocaleString();
 
-  // Form gönderme (AJAX)
-  $('#chatForm').submit(function(e){
-    e.preventDefault();
+                    $('#messagesContainer').append(`
+                        <div style="display: flex; justify-content: flex-end; width: 100%;">
+                            <div style="max-width: 70%; padding: 1rem; border-radius: var(--radius-lg); background: var(--accent-gradient); color: white; border-bottom-right-radius: 0;">
+                                <div class="message-body" style="word-break: break-word;">${htmlContent}</div>
+                                <div style="font-size: 0.7rem; opacity: 0.7; margin-top: 0.5rem; text-align: right;">${formattedTime}</div>
+                            </div>
+                        </div>
+                    `);
 
-    // Editor içeriğini al
-    const htmlContent = editor.innerHTML.trim();
-    // Eğer sadece placeholder ya da boşsa çık
-    if (!htmlContent || htmlContent === '<div class="editor-placeholder">Type a message...</div>') return;
+                    $('#messagesContainer').scrollTop($('#messagesContainer')[0].scrollHeight);
+                    editor.innerHTML = '<div class="editor-placeholder" style="color: var(--text-secondary); pointer-events: none;">Type a message...</div>';
+                },
+                error: function(err){
+                    alert('Message failed to send.');
+                }
+            });
+        });
 
-    // Hidden inputa koy
-    $('#textHidden').val(htmlContent);
-
-    const otherId = '<%= otherUser._id %>';
-
-    // Basit AJAX POST (server mevcut /messages/:id route'unu kullanır)
-    $.ajax({
-      url: '/messages/' + otherId,
-      method: 'POST',
-      data: { text: htmlContent },
-      success: function(data){
-        // Şu anda server redirect dönebilir; biz yine de yeni mesajı ekliyoruz
-        const now = new Date();
-        const formattedTime = now.toLocaleString();
-
-        // Mesajı mesaj container'a ekle (HTML içeriğini kullan)
-        $('#messagesContainer').append(`
-          <div class="d-flex justify-content-end mb-2">
-            <div class="message-sent p-2 rounded">
-              <strong><%= locals.user.username %>:</strong>
-              <div class="message-body">${htmlContent}</div>
-              <div class="text-muted" style="font-size:0.75rem;">${formattedTime}</div>
-            </div>
-          </div>
-        `);
-
-        // Scroll en alta
-        $('#messagesContainer').scrollTop($('#messagesContainer')[0].scrollHeight);
-
-        // Editor temizle
-        editor.innerHTML = '<div class="editor-placeholder">Type a message...</div>';
-      },
-      error: function(err){
-        alert('Mesaj gönderilemedi.');
-      }
-    });
-  });
-
-  // Sayfa yüklendiğinde scroll en alta
-  $(document).ready(function(){
-    $('#messagesContainer').scrollTop($('#messagesContainer')[0].scrollHeight);
-  });
-</script>
-
+        $(document).ready(function(){
+            $('#messagesContainer').scrollTop($('#messagesContainer')[0].scrollHeight);
+        });
+    </script>
 <%- include("partials/_footer") %>

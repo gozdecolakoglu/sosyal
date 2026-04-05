@@ -1,55 +1,41 @@
-<footer>
-   <div class="footer">
-     <div class="container">
-       <div class="row">
-         <div class="col-md-12">
-           <ul class="menu_footer">
-             <li><a class="<%= link === 'index' && 'active' %>" href="/">Home</a></li>
-            <!-- <li><a class="<%= link === 'about' && 'active' %>" href="/about">About</a></li>-->
-             <li><a class="<%= link === 'photos' && 'active' %>" href="/photos">Photos</a></li>
-             <li><a class="<%= link === 'users' && 'active' %>" href="/users">Users</a></li>
-             <li><a class="<%= link === 'contact' && 'active' %>" href="/contact">Contact</a></li>
-           </ul>
-         </div>
-         <div class="col-md-12">
-           <ul class="top_infomation">
-             <li><a href="javascript:void(0)"><i><img src="/images/loc.png" alt="#" /></i></a></li>
-             <li><a href="javascript:void(0)"><i><img src="/images/call.png" alt="#" /></i></a></li>
-             <li><a href="/contact"><i><img src="/images/mail.png" alt="contact" /></i></a></li>
-           </ul>
-         </div>
-       </div>
-     </div>
-     <div class="copyright">
-       <div class="container">
-         <div class="row d_flex">
-           <div class="col-md-8">
-             <p>© 2025 by gozdecolakoglu</a>
-             </p>
-           </div>
-           <div class="col-md-4">
-             <ul class="social_icon_bottom ">
-               <li><a href="Javascript:void(0)"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-               <li><a href="Javascript:void(0)"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-               <li><a href="Javascript:void(0)"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-             </ul>
-           </div>
-         </div>
-       </div>
-     </div>
-   </div>
- </footer>
- <!-- end footer -->
- <!-- Javascript files-->
- <script src="/js/jquery.min.js"></script>
- <script src="/js/bootstrap.bundle.min.js"></script>
- <script src="/js/jquery-3.0.0.min.js"></script>
- <script src="/js/owl.carousel.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
- <script src="/js/custom.js"></script>
- <script type="text/javascript">
- <!--  baguetteBox.run('.tz-gallery');-->
- </script>
- </body>
- 
- </html>
+<footer style="background-color: var(--surface-color); border-top: 1px solid var(--border-color); padding: 3rem 0; margin-top: auto;">
+    <div class="modern-container">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+            <!-- Links -->
+            <ul style="display: flex; gap: 1.5rem; list-style: none; padding: 0; margin: 0; flex-wrap: wrap; justify-content: center;">
+                <li><a class="modern-nav-link <%= link === 'index' ? 'active' : '' %>" href="/">Home</a></li>
+                <li><a class="modern-nav-link <%= link === 'photos' ? 'active' : '' %>" href="/photos">Photos</a></li>
+                <li><a class="modern-nav-link <%= link === 'users' ? 'active' : '' %>" href="/users">Users</a></li>
+                <li><a class="modern-nav-link <%= link === 'contact' ? 'active' : '' %>" href="/contact">Contact</a></li>
+            </ul>
+
+            <!-- Contact -->
+            <ul style="display: flex; gap: 1.5rem; list-style: none; padding: 0; margin: 0;">
+                <li><a href="javascript:void(0)" class="text-secondary"><i class="fa fa-map-marker fa-lg"></i></a></li>
+                <li><a href="javascript:void(0)" class="text-secondary"><i class="fa fa-phone fa-lg"></i></a></li>
+                <li><a href="/contact" class="text-secondary"><i class="fa fa-envelope fa-lg"></i></a></li>
+            </ul>
+
+            <!-- Copyright and Social Icons -->
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; width: 100%; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                <p class="text-secondary" style="font-size: 0.875rem; margin: 0;">© 2025 by gozdecolakoglu</p>
+                
+                <ul style="display: flex; gap: 1rem; list-style: none; padding: 0; margin: 0;">
+                    <li><a href="javascript:void(0)" class="text-secondary"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                    <li><a href="javascript:void(0)" class="text-secondary"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                    <li><a href="javascript:void(0)" class="text-secondary"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Javascript files-->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/jquery-3.0.0.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
+<script src="/js/custom.js"></script>
+</body>
+</html>

@@ -1,80 +1,57 @@
 <%- include("partials/_header") %>
-   <!-- body -->
-   <body class="main-layout inner_page">
-      <!-- loader  -->
-     <!--  <div class="loader_bg">
-         <div class="loader"><img src="images/loading.gif" alt="#"/></div>
-      </div>-->
-      <!-- end loader -->
-      <!-- header -->
-      <%- include("partials/_menu") %>
-         <!-- end header inner -->
-         <!-- contact -->
-         <div class="contact">
-            <div class="container">
-               <div class="row">
-                  <div class="col-md-12 ">
-                     <div class="titlepage text_align_center">
-                        <h2>Requste A Call Back</h2>
-                     </div>
-                  </div>
-                  <div class="col-md-8 offset-md-2">
-                     <form id="request" class="main_form" action="/contact" method="POST">
-                        <div class="col-md-12">
-                           <div style="display:none ;" class="alert alert-success" id="sendMessage"></div>
-                        </div>
-                        <div class="row">
-                           <div class="col-md-12">
-                              <input class="form_control" placeholder="Your name" type="text" name="name">
-                           </div>
-                           <div class="col-md-12">
-                              <input class="form_control" placeholder="Email" type="email" name="email">
-                           </div>
-                           <div class="col-md-12">
-                              <input class="form_cont" placeholder="Message" type="type" name="message">
-                           </div>
-                           <div class="col-md-12">
-                              <div class="group_form">
-                                 <button class="send_btn">Send</button>
-                              </div>
-                           </div>
-                        </div>
-                     </form>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <!-- end contact -->
-         <!-- end footer -->
-         <script>
-            const form = document.querySelector('form')
-            const sendMessage = document.querySelector('#sendMessage')
-            form.addEventListener("submit", async (e) => {
-               e.preventDefault();
-               const name = form.name.value
-               const email = form.email.value
-               const message = form.message.value
-               try {
-                  const res = await fetch('/contact', {
-                     method: "POST",
-                     body: JSON.stringify({ name, email, message }),
-                     headers: { "Content-Type": "application/json" }
-                  })
-                  const data = await res.json();
-                  console.log("DATA", data)
-                  if (data.succeeded) {
-                     sendMessage.textContent = "Your Message Received Succsfully"
-                     sendMessage.style.display = "block"
-                     setTimeout(() => {
-                        sendMessage.style.display = "none"
-                        form.name.value = ""
-                        form.email.value = ""
-                        form.message.value = ""
-                     }, 5000)
-                  }
-               } catch (err) {
-                  console.log("ERR::", err)
-               }
-            })
-         </script>
-         <%- include("partials/_footer") %>
+<body class="modern-body">
+    <%- include("partials/_menu") %>
+
+    <main class="modern-container mt-8 mb-8" style="min-height: 70vh; display: flex; align-items: center; justify-content: center;">
+        <div class="modern-card p-6" style="width: 100%; max-width: 600px;">
+            <h2 class="text-gradient text-center" style="font-size: 2.5rem; margin-bottom: 2rem;">Request A Call Back</h2>
+            
+            <div style="display: none; padding: 1rem; margin-bottom: 1.5rem; border-radius: var(--radius-md); background: #dcfce7; color: #166534; font-weight: 500; text-align: center;" id="sendMessage"></div>
+            
+            <form id="request" action="/contact" method="POST">
+                <div class="modern-form-group">
+                    <label class="modern-label">Your Name</label>
+                    <input class="modern-input" placeholder="John Doe" type="text" name="name" required>
+                </div>
+                <div class="modern-form-group">
+                    <label class="modern-label">Email Address</label>
+                    <input class="modern-input" placeholder="john@example.com" type="email" name="email" required>
+                </div>
+                <div class="modern-form-group">
+                    <label class="modern-label">Message</label>
+                    <textarea class="modern-input" placeholder="How can we help you?" name="message" rows="5" required style="resize: vertical;"></textarea>
+                </div>
+                <button type="submit" class="modern-btn modern-btn-primary" style="width: 100%; padding: 1rem; font-size: 1.125rem;">Send Message</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        const form = document.querySelector('form');
+        const sendMessage = document.querySelector('#sendMessage');
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const name = form.name.value;
+            const email = form.email.value;
+            const message = form.message.value;
+            try {
+                const res = await fetch('/contact', {
+                    method: "POST",
+                    body: JSON.stringify({ name, email, message }),
+                    headers: { "Content-Type": "application/json" }
+                });
+                const data = await res.json();
+                if (data.succeeded) {
+                    sendMessage.textContent = "Your Message Received Successfully";
+                    sendMessage.style.display = "block";
+                    setTimeout(() => {
+                        sendMessage.style.display = "none";
+                        form.reset();
+                    }, 5000);
+                }
+            } catch (err) {
+                console.log("ERR::", err);
+            }
+        });
+    </script>
+<%- include("partials/_footer") %>

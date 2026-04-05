@@ -1,45 +1,45 @@
-<header class="header-area">
-    <div class="container-fluid">
-       <div class="row ">
-         
-          <div class=" col-md-2 col-sm-3">
-             <div class="logo">
-                <a href="/">Social<br><span>Media</span></a>
-             </div>
-          </div>
+<header class="modern-navbar">
+    <div class="modern-container modern-nav-content">
+        <div class="modern-nav-header">
+            <a href="/" class="modern-brand text-gradient">Social Media</a>
+            <button class="modern-hamburger" id="nav-toggle">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+        <nav class="modern-navbar-collapse" id="nav-collapse">
+            <ul class="modern-nav-links">
+                <li><a class="modern-nav-link <%= typeof link !== 'undefined' && link === 'index' ? 'active' : '' %>"
+                        href="/"><i class="fa fa-home"></i> Home</a></li>
+                <li><a class="modern-nav-link <%= typeof link !== 'undefined' && link === 'photos' ? 'active' : '' %>"
+                        href="/photos"><i class="fa fa-picture-o"></i> Photos</a></li>
 
-          <div class="col-md-10">
-            <div class="navbar-area" style="float:right ;">
-                <nav class="site-navbar">
-                   <ul>
-                      <li><a class="<%= link === 'index' && 'active' %>" href="/"><i class="fa fa-home">
-                      </i> Home</a></li>
-                     <!-- <li><a class="<%= link === 'about' && 'active' %>" href="/about"><i class="fa fa-address-card"></i> About</a></li>-->
-                      <li><a class="<%= link === 'photos' && 'active' %>" href="/photos"><i class="fa fa-picture-o">
-                     </i> Photos</a></li>
-                 
-                      <% if (user) { %>
-                        <li><a class="<%= link === 'users' && 'active' %>" href="/users"><i class="fa fa-users">
-                        </i> Users</a></li>
-                        <li><a class="<%= link === 'dashboard' && 'active' %>" href="/users/dashboard"><i class="fa fa-user">
-                        </i> Dashboard</a></li>
-                         <li><a class="<%= link === 'messages' && 'active' %>" href="/messages"><i class="fa fa-user">
-                        </i> Messages</a></li>
-                        <li><a href="/logout"><i class="fa fa-sign-out" style="font-size:20px">
-                        </i> Logout</a></li>
-                        <% } else { %>
-                          <li><a class="<%= link === 'login' && 'active' %>" href="/login"><i class="fa fa-sign-in" style="font-size:20px">
-                        </i> Login</a></li>
-                          <li><a class="<%= link === 'register' && 'active' %>" href="/register"><i class="fa fa-pencil">
-                        </i> Register</a></li>
-                          <% }%>
-                   </ul>
-                   <button class="nav-toggler">
-                   <span></span>
-                   </button> 
-                </nav>
-             </div>
-          </div>
-       </div>
+                <% if (typeof user !=='undefined' && user) { %>
+                    <li><a class="modern-nav-link <%= typeof link !== 'undefined' && link === 'users' ? 'active' : '' %>"
+                            href="/users"><i class="fa fa-users"></i> Users</a></li>
+                    <li><a class="modern-nav-link <%= typeof link !== 'undefined' && link === 'dashboard' ? 'active' : '' %>"
+                            href="/users/dashboard"><i class="fa fa-user"></i> Dashboard</a></li>
+                    <li><a class="modern-nav-link <%= typeof link !== 'undefined' && link === 'messages' ? 'active' : '' %>"
+                            href="/messages"><i class="fa fa-comment"></i> Messages</a></li>
+                    <li><a class="modern-nav-link" href="/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
+                    <% } else { %>
+                        <li><a class="modern-nav-link <%= typeof link !== 'undefined' && link === 'login' ? 'active' : '' %>"
+                                href="/login"><i class="fa fa-sign-in"></i> Login</a></li>
+                        <li><a class="modern-btn modern-btn-primary" href="/register"><i class="fa fa-pencil"></i>
+                                Register</a></li>
+                        <% } %>
+            </ul>
+        </nav>
     </div>
- </header>
+</header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggle = document.getElementById('nav-toggle');
+        const collapse = document.getElementById('nav-collapse');
+        if (toggle && collapse) {
+            toggle.addEventListener('click', function () {
+                collapse.classList.toggle('show');
+            });
+        }
+    });
+</script>

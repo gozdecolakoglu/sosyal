@@ -1,34 +1,22 @@
 <%- include("partials/_header") %>
-   <!-- body -->
-   <body class="main-layout inner_page">
-      <!-- loader  -->
-     <!--  <div class="loader_bg">
-         <div class="loader"><img src="images/loading.gif" alt="#"/></div>
-      </div>-->
-      <!-- end loader -->
-         <!-- header -->
-         <%- include("partials/_menu") %>
-      <!-- end header inner -->
-      <!-- about -->
-      <div class="about">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="titlepage text_align_left">
-                <span>About</span>
-                <h2>Us</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit lorem sit amet urna hendrerit, vel venenatis odio elementum. Vestibulum hendrerit et sem at pulvinar. Nam tincidunt rhoncus nisl eget consectetur. </p>
-                <a class="read_more" href="<%= user ? 'users/dashboard' : '/register' %>">Join</a>
-              </div>
+<body class="modern-body">
+    <%- include("partials/_menu") %>
+
+    <main class="modern-container mt-8 mb-8" style="min-height: 70vh; display: flex; align-items: center;">
+        <div style="display: flex; flex-wrap: wrap; gap: 4rem; align-items: center; width: 100%;">
+            <div style="flex: 1 1 40%;">
+                <h2 class="text-gradient" style="font-size: 3rem; margin-bottom: 1.5rem;">About Us</h2>
+                <p class="text-secondary mb-6" style="font-size: 1.125rem; line-height: 1.8;">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit lorem sit amet urna hendrerit, vel venenatis odio elementum. Vestibulum hendrerit et sem at pulvinar. Nam tincidunt rhoncus nisl eget consectetur.
+                </p>
+                <a href="<%= user ? '/users/dashboard' : '/register' %>" class="modern-btn modern-btn-primary" style="padding: 0.75rem 2rem; font-size: 1.125rem;">Join the Community</a>
             </div>
-            <div class="col-md-6">
-              <div class="about_img">
-                <figure><img src="images/about_img.png" alt="#"/></figure>
-              </div>
+            <div style="flex: 1 1 50%;">
+                <div class="modern-card" style="padding: 1rem;">
+                    <img src="images/about_img.png" alt="About Us" style="width: 100%; border-radius: var(--radius-md);">
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-      <!-- end about -->
-      <!-- end footer -->
-      <%- include("partials/_footer") %>
+    </main>
+
+<%- include("partials/_footer") %>

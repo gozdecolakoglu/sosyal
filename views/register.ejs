@@ -1,100 +1,85 @@
 <%- include("partials/_header") %>
-   <!-- body -->
-   <body class="main-layout inner_page">
-      <!-- loader  -->
-   <!--  <div class="loader_bg">
-         <div class="loader"><img src="images/loading.gif" alt="#"/></div>
-      </div>-->
-      <!-- end loader -->
-      <!-- header -->
-      <%- include("partials/_menu") %>
-         <!-- end header inner -->
-         <!-- contact -->
-         <div class="contact">
-            <div class="container">
-               <div class="row">
-                  <div class="col-md-12 ">
-                     <div class="titlepage text_align_center">
-                        <h2>Register</h2>
-                     </div>
-                  </div>
-                  <div class="col-md-8 offset-md-2">
-                     <form id="request" class="main_form" action="users/register" method="POST">
-                        <div class="row">
-                           <div class="col-md-12">
-                              <input class="form_control" placeholder="Username" type="text" name="username">
-                           </div>
-                           <div class="col-md-12">
-                              <div style="display: none;" class="alert alert-danger" id="username"></div>
-                           </div>
-                           <div class="col-md-12">
-                              <input class="form_control" placeholder="Email" type="text" name="email">
-                           </div>
-                           <div class="col-md-12">
-                              <div style="display: none;" class="alert alert-danger" id="email"></div>
-                           </div>
-                           <div class="col-md-12">
-                              <input class="form_control" placeholder="Password" type="password" name="password">
-                           </div>
-                           <div class="col-md-12">
-                              <div style="display: none;" class="alert alert-danger" id="password"></div>
-                           </div>
-                           <div class="col-md-12">
-                              <div class="group_form">
-                                 <button class="send_btn">Register</button>
-                              </div>
-                           </div>
-                        </div>
-                     </form>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <script>
-            const form = document.querySelector('form')
-            const emailError = document.querySelector('#email')
-            const passwordError = document.querySelector('#password')
-            const usernameError = document.querySelector('#username')
-            form.addEventListener("submit", async (e) => {
-               e.preventDefault();
-               emailError.textContent = "";
-               passwordError.textContent = "";
-               usernameError.textContent = "";
-               emailError.style.display = "none"
-               passwordError.style.display = "none"
-               usernameError.style.display = "none"
-               const email = form.email.value
-               const password = form.password.value
-               const username = form.username.value
-               try {
-                  const res = await fetch('users/register', {
-                     method: "POST",
-                     body: JSON.stringify({ email, password, username }),
-                     headers: { "Content-Type": "application/json" }
-                  })
-                  const data = await res.json();
-                  if (data) {
-                     if (data.email) {
-                        emailError.textContent = data.email
-                        emailError.style.display = "block"
-                     }
-                     if (data.password) {
-                        passwordError.textContent = data.password
-                        passwordError.style.display = "block"
-                     }
-                     if (data.username) {
-                        usernameError.textContent = data.username
-                        usernameError.style.display = "block"
-                     }
-                  }
-                  if (data.user) {
-                     location.assign("/login")
-                  }
-               } catch (err) {
-                  console.log("ERR::", err)
-               }
-            })
-         </script>
-         <!-- end contact -->
-         <!-- end footer -->
-         <%- include("partials/_footer") %>
+<body class="modern-body">
+    <%- include("partials/_menu") %>
+
+    <main class="modern-container" style="display: flex; align-items: center; justify-content: center; min-height: 80vh;">
+        <div class="modern-card" style="width: 100%; max-width: 450px; padding: 3rem 2.5rem;">
+            <h2 class="text-center text-gradient mb-6" style="font-size: 2.25rem;">Create Account</h2>
+            <p class="text-center text-secondary mb-6">Join us and start sharing photos</p>
+            
+            <form id="request" action="users/register" method="POST">
+                <div class="modern-form-group">
+                    <label class="modern-label">Username</label>
+                    <input class="modern-input" placeholder="Choose a username" type="text" name="username" required>
+                    <div style="display: none; background-color: #fee2e2; color: #dc2626; padding: 0.5rem; border-radius: var(--radius-sm); margin-top: 0.5rem; font-size: 0.8rem;" id="username"></div>
+                </div>
+
+                <div class="modern-form-group">
+                    <label class="modern-label">Email</label>
+                    <input class="modern-input" placeholder="Enter your email" type="email" name="email" required>
+                    <div style="display: none; background-color: #fee2e2; color: #dc2626; padding: 0.5rem; border-radius: var(--radius-sm); margin-top: 0.5rem; font-size: 0.8rem;" id="email"></div>
+                </div>
+
+                <div class="modern-form-group mb-6">
+                    <label class="modern-label">Password</label>
+                    <input class="modern-input" placeholder="Create a password" type="password" name="password" required>
+                    <div style="display: none; background-color: #fee2e2; color: #dc2626; padding: 0.5rem; border-radius: var(--radius-sm); margin-top: 0.5rem; font-size: 0.8rem;" id="password"></div>
+                </div>
+
+                <div class="modern-form-group">
+                    <button type="submit" class="modern-btn modern-btn-primary" style="width: 100%;">Register</button>
+                </div>
+            </form>
+            
+            <p class="text-center text-secondary mt-6" style="font-size: 0.875rem;">
+                Already have an account? <a href="/login" class="text-primary" style="font-weight: 500;">Login here</a>
+            </p>
+
+            <script>
+                const form = document.querySelector('form')
+                const emailError = document.querySelector('#email')
+                const passwordError = document.querySelector('#password')
+                const usernameError = document.querySelector('#username')
+                form.addEventListener("submit", async (e) => {
+                   e.preventDefault();
+                   emailError.textContent = "";
+                   passwordError.textContent = "";
+                   usernameError.textContent = "";
+                   emailError.style.display = "none"
+                   passwordError.style.display = "none"
+                   usernameError.style.display = "none"
+                   const email = form.email.value
+                   const password = form.password.value
+                   const username = form.username.value
+                   try {
+                      const res = await fetch('users/register', {
+                         method: "POST",
+                         body: JSON.stringify({ email, password, username }),
+                         headers: { "Content-Type": "application/json" }
+                      })
+                      const data = await res.json();
+                      if (data) {
+                         if (data.email) {
+                            emailError.textContent = data.email
+                            emailError.style.display = "block"
+                         }
+                         if (data.password) {
+                            passwordError.textContent = data.password
+                            passwordError.style.display = "block"
+                         }
+                         if (data.username) {
+                            usernameError.textContent = data.username
+                            usernameError.style.display = "block"
+                         }
+                      }
+                      if (data.user) {
+                         location.assign("/login")
+                      }
+                   } catch (err) {
+                      console.log("ERR::", err)
+                   }
+                })
+             </script>
+        </div>
+    </main>
+<%- include("partials/_footer") %>

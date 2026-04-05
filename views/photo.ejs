@@ -1,151 +1,116 @@
 <%- include("partials/_header") %>
-   <!-- body -->
+<body class="modern-body">
+    <%- include("partials/_menu") %>
 
-   <body class="main-layout inner_page">
-      <!-- loader  -->
-     <!--  <div class="loader_bg">
-         <div class="loader"><img src="images/loading.gif" alt="#"/></div>
-      </div>-->
-      <!-- end loader -->
-
-      <!-- header -->
-      <%- include("partials/_menu") %>
-         <!-- end header inner -->
-         <!-- about -->
-         <div class="about">
-            <div class="container">
-               <div class="row">
-                  <div class="col-md-6">
-                     <div class="titlepage text_align_left">
-                        <h3 style="font-size:24px !important ;">
-                           <%= photo.name %>
-                        </h3>
-                        <p>
-                           <%= photo.description %>
-                        </p>
-                        <a class="read_more" href="/users/<%= photo.user._id %>"> Artist: <%= photo.user.username %> <i class="fa fa-external-link-square"
-                           aria-hidden="true"></i>
-                          
-                        </a>
-
-                        <% if (isOwner) { %>
-
-                           <div style="margin-top: 30px ;">
-                              <ul style="display: flex; justify-content: space-between;">
-                                 <li><button class="photoupdate" data-toggle="modal"
-                                       data-target="#updateModal">Update</button></li>
-                                 <li><a  class="photoupdate"
-                                       href="/photos/<%= photo._id %>?_method=DELETE"
-                                       onclick="return confirm('Do you want to delete the photo')">Delete</a></li>
-                              </ul>
-                           </div>
-
-                           <% }%>
-                     </div>
-                  </div>
-                  <div class="col-md-6">
-                     <div class="about_img">
-                        <figure><img style="z-index:1 ;" src="<%= photo.url %>" alt="<%= photo.name %>" /></figure>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <!-- end about -->
-         <!-- end footer -->
-         <div id="updateModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-            aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-               <div class="modal-content">
-                  <div class="modal-header">
-                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                     </button>
-                  </div>
-                  <div style="margin-top: 50px; margin-bottom: 50px;" class="container">
-                     <div class="row">
-                        <div class="col-md-12 ">
-                           <div class="text_align_center">
-                              <h2 style="
-         font-size: 30px;
-         margin-bottom: 20px;
-         color: #D43A8E;
-     ">Add New Photo</h2>
-                           </div>
-                        </div>
-                        <div class="col-md-10 offset-md-1">
-                           <form id="request" class="main_form" method="POST"
-                              action="/photos/<%= photo._id %>?_method=PUT" enctype="multipart/form-data">
-                              <div class="row">
-                                 <div class="col-md-12">
-                                    <input value="<%= photo.name %>" class="form_control" placeholder="Name" type="text"
-                                       name="name">
-                                 </div>
-                                 <div class="col-md-12">
-                                    <textarea name="description" style="height: 150px;" class="form_control"
-                                       placeholder="Description" rows="5"><%= photo.description %></textarea>
-                                 </div>
-
-                                 <div style="margin-bottom: 20px ;" class="col-md-12">
-                                    <input type="file" name="image" class="form-control-file">
-                                 </div>
-
-                                 <div class="col-md-12">
-                                    <div class="group_form">
-                                       <button class="read_more">Update Photo</button>
-                                    </div>
-                                 </div>
-                              </div>
-                           </form>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-                           <!-- Fotoğraf detaylarının altına ekle -->
-                           <div class="container mt-5">
-<div class="interactions" style="margin: 20px 0; display: flex; gap: 15px;">
-   <% if (user) { %>
-     <form action="/photos/<%= photo._id %>/like" method="POST">
-       <button type="submit" class="btn <%= isLiked ? 'btn-success' : 'btn-outline-success' %>">
-         👍 Like (<%= photo.likes.length %>)
-       </button>
-     </form>
-     <form action="/photos/<%= photo._id %>/dislike" method="POST">
-       <button type="submit" class="btn <%= isDisliked ? 'btn-danger' : 'btn-outline-danger' %>">
-         👎 Dislike (<%= photo.dislikes.length %>)
-       </button>
-     </form>
-   <% } else { %>
-     <p>for comment, Like or dislike <a href="/users/login">login</a></p>
-   <% } %>
- </div> </div>
-         <!-- Yorum Formu -->
-         <% if (user) { %>
-            <div class="container mt-5">
-              <form action="/photos/<%= photo._id %>/comments" method="POST">
-                <div class="form-group">
-                  <textarea class="form-control" name="text" rows="3" required></textarea>
+    <main class="modern-container mt-8 mb-8" style="min-height: 70vh;">
+        <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
+            <!-- Left: Photo Image -->
+            <div style="flex: 1 1 60%;">
+                <div class="modern-card" style="padding: 1rem; position: sticky; top: 100px;">
+                    <img src="<%= photo.url %>" alt="<%= photo.name %>" style="width: 100%; border-radius: var(--radius-md);">
                 </div>
-                <button type="submit" class="btn btn-primary">Send</button>
-              </form>
             </div>
-          <% } %>
 
-          <!-- Yorum Listesi -->
-          <div class="container mt-4">
-            <% photo.comments.slice().sort((a, b) => b.createdAt - a.createdAt).forEach(comment => { %>
-              <div class="card mb-3">
-                <div class="card-body">
-                 <h6 class="card-subtitle mb-2 text-muted">
-  <%= (comment.postedBy && comment.postedBy.username) ? comment.postedBy.username : 'Bilinmeyen Kullanıcı' %> - 
-  <%= comment.createdAt.toLocaleString('tr-TR') %>
-</h6>
-                  <p class="card-text"><%= comment.text %></p>
+            <!-- Right: Details, Interactions, Comments -->
+            <div style="flex: 1 1 35%; display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Details Card -->
+                <div class="modern-card p-6">
+                    <h2 class="text-gradient" style="font-size: 2rem; margin-bottom: 1rem;"><%= photo.name %></h2>
+                    <p class="text-secondary mb-4"><%= photo.description %></p>
+                    <a href="/users/<%= photo.user._id %>" class="modern-btn modern-btn-outline" style="width: 100%;">
+                        <i class="fa fa-user"></i>&nbsp;Artist: <%= photo.user.username %>
+                    </a>
+                    
+                    <% if (isOwner) { %>
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <button class="modern-btn modern-btn-primary" style="flex: 1;" data-toggle="modal" data-target="#updateModal">Update</button>
+                        <a href="/photos/<%= photo._id %>?_method=DELETE" class="modern-btn modern-btn-outline" style="flex: 1; border-color: #dc2626; color: #dc2626;" onclick="return confirm('Do you want to delete the photo')">Delete</a>
+                    </div>
+                    <% } %>
                 </div>
-              </div>
-            <% }) %>
-          </div>
 
-         <%- include("partials/_footer") %>
+                <!-- Interactions -->
+                <div class="modern-card p-6">
+                    <h3 style="font-size: 1.25rem; margin-bottom: 1rem;">Interactions</h3>
+                    <% if (user) { %>
+                        <div style="display: flex; gap: 1rem;">
+                            <form action="/photos/<%= photo._id %>/like" method="POST" style="flex: 1;">
+                                <button type="submit" class="modern-btn modern-btn-outline" style="width: 100%; <%= isLiked ? 'background: var(--accent-gradient); color: white; border: none;' : '' %>">
+                                    👍 Like (<%= photo.likes.length %>)
+                                </button>
+                            </form>
+                            <form action="/photos/<%= photo._id %>/dislike" method="POST" style="flex: 1;">
+                                <button type="submit" class="modern-btn modern-btn-outline" style="width: 100%; <%= isDisliked ? 'background: #dc2626; color: white; border: none;' : '' %>">
+                                    👎 Dislike (<%= photo.dislikes.length %>)
+                                </button>
+                            </form>
+                        </div>
+                    <% } else { %>
+                        <p class="text-secondary">Please <a href="/login" class="text-primary" style="font-weight: 500;">log in</a> to like, dislike, or comment.</p>
+                    <% } %>
+                </div>
+
+                <!-- Comments -->
+                <div class="modern-card p-6">
+                    <h3 style="font-size: 1.25rem; margin-bottom: 1rem;">Comments</h3>
+                    
+                    <% if (user) { %>
+                    <form action="/photos/<%= photo._id %>/comments" method="POST" style="margin-bottom: 2rem;">
+                        <div class="modern-form-group">
+                            <textarea class="modern-input" name="text" rows="3" required placeholder="Add a comment..."></textarea>
+                        </div>
+                        <button type="submit" class="modern-btn modern-btn-primary" style="width: 100%;">Post Comment</button>
+                    </form>
+                    <% } %>
+
+                    <div style="display: flex; flex-direction: column; gap: 1rem; max-height: 400px; overflow-y: auto;">
+                        <% photo.comments.slice().sort((a, b) => b.createdAt - a.createdAt).forEach(comment => { %>
+                            <div style="padding: 1.25rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-color);">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; align-items: center;">
+                                    <span style="font-weight: 600; color: var(--text-primary);"><%= (comment.postedBy && comment.postedBy.username) ? comment.postedBy.username : 'Unknown User' %></span>
+                                    <span class="text-secondary" style="font-size: 0.8rem;"><%= comment.createdAt.toLocaleDateString() %></span>
+                                </div>
+                                <p style="margin: 0; font-size: 0.95rem; color: var(--text-secondary);"><%= comment.text %></p>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Update Modal -->
+    <div id="updateModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content modern-card" style="border: none; padding: 2rem;">
+                <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
+                    <h3 class="text-gradient">Update Photo</h3>
+                    <button type="button" class="close" data-dismiss="modal" style="background: none; border: none; font-size: 1.5rem; color: var(--text-secondary); cursor: pointer;">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="/photos/<%= photo._id %>?_method=PUT" enctype="multipart/form-data">
+                        <div class="modern-form-group">
+                            <label class="modern-label">Title</label>
+                            <input class="modern-input" value="<%= photo.name %>" type="text" name="name" required>
+                        </div>
+                        <div class="modern-form-group">
+                            <label class="modern-label">Description</label>
+                            <textarea name="description" class="modern-input" rows="4" required style="resize: vertical;"><%= photo.description %></textarea>
+                        </div>
+                        <div class="modern-form-group mb-6">
+                            <label class="modern-label">Update Image (Optional)</label>
+                            <input type="file" name="image" class="modern-input" style="padding: 0.5rem 0; border: none; background: transparent;">
+                        </div>
+                        <div class="modern-form-group" style="text-align: right;">
+                            <button type="submit" class="modern-btn modern-btn-primary">Update Photo</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<%- include("partials/_footer") %>
