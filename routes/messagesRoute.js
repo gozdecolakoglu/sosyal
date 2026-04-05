@@ -7,7 +7,9 @@ const router = express.Router();
 
 // Kullanıcıların listesini göster
 router.get("/", authenticateToken, async (req, res) => {
-  const userId = res.locals.user._id;
+  const user = res.locals.user;
+  if (!user) return res.redirect("/login");
+  const userId = user._id;
 
   // Tüm kullanıcılar (kendisi hariç)
   const allUsers = await User.find({ _id: { $ne: userId } });
@@ -23,7 +25,7 @@ router.get("/", authenticateToken, async (req, res) => {
     if (msg.from && String(msg.from._id) !== String(userId)) {
       usersMap.set(msg.from._id.toString(), msg.from);
     }
-    if (String(msg.to._id) !== String(userId)) {
+    if (msg.to && String(msg.to._id) !== String(userId)) {
       usersMap.set(msg.to._id.toString(), msg.to);
     }
   });
@@ -35,11 +37,16 @@ router.get("/", authenticateToken, async (req, res) => {
 
 // Belirli bir kullanıcı ile olan mesajları listele
 router.get("/:id", authenticateToken, async (req, res) => {
+  const user = res.locals.user;
+  if (!user) return res.redirect("/login");
+
   const otherUser = await User.findById(req.params.id);
+  if (!otherUser) return res.redirect("/messages");
+
   const messages = await Message.find({
     $or: [
-      { from: res.locals.user._id, to: otherUser._id },
-      { from: otherUser._id, to: res.locals.user._id }
+      { from: user._id, to: otherUser._id },
+      { from: otherUser._id, to: user._id }
     ]
   }).populate("from to", "username").sort("createdAt");
 
@@ -48,8 +55,11 @@ router.get("/:id", authenticateToken, async (req, res) => {
 
 // Mesaj gönder
 router.post("/:id", authenticateToken, async (req, res) => {
+  const user = res.locals.user;
+  if (!user) return res.status(401).json({ success: false, error: "Not logged in" });
+
   const msg = await Message.create({
-    from: res.locals.user._id,
+    from: user._id,
     to: req.params.id,
     text: req.body.text
   });
