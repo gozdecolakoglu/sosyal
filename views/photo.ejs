@@ -35,12 +35,12 @@
                     <% if (user) { %>
                         <div style="display: flex; gap: 1rem;">
                             <form action="/photos/<%= photo._id %>/like" method="POST" style="flex: 1;">
-                                <button type="submit" class="modern-btn modern-btn-outline" style="width: 100%; <%= isLiked ? 'background: var(--accent-gradient); color: white; border: none;' : '' %>">
+                                <button type="submit" class="modern-btn modern-btn-outline <% if (isLiked) { %> btn-liked <% } %>" style="width: 100%;">
                                     👍 Like (<%= photo.likes.length %>)
                                 </button>
                             </form>
                             <form action="/photos/<%= photo._id %>/dislike" method="POST" style="flex: 1;">
-                                <button type="submit" class="modern-btn modern-btn-outline" style="width: 100%; <%= isDisliked ? 'background: #dc2626; color: white; border: none;' : '' %>">
+                                <button type="submit" class="modern-btn modern-btn-outline <% if (isDisliked) { %> btn-disliked <% } %>" style="width: 100%;">
                                     👎 Dislike (<%= photo.dislikes.length %>)
                                 </button>
                             </form>

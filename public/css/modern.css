@@ -570,3 +570,16 @@ img {
     gap: 0.5rem;
   }
 }
+
+/* Interaction Styles */
+.btn-liked {
+  background: var(--accent-gradient) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.btn-disliked {
+  background: #dc2626 !important;
+  color: white !important;
+  border: none !important;
+}
