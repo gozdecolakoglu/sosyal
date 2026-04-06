@@ -32,17 +32,38 @@
             <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Latest Photos</h2>
             <p class="text-secondary mb-4">Discover what others are capturing around the world.</p>
             
-            <div class="modern-photo-grid">
-                <% for (photo of photos) { %>
-                    <a href="/photos/<%= photo._id %>" class="modern-photo-card">
-                        <img src="<%= photo.url %>" alt="<%= photo.name %>">
-                        <div class="modern-photo-overlay">
-                            <p><%= photo.description.substring(0, 80) + "..." %></p>
+            <div class="slider-container">
+                <div class="photos-slider" id="latestPhotosSlider">
+                    <% for (photo of photos) { %>
+                        <div class="slider-item">
+                            <a href="/photos/<%= photo._id %>" class="modern-photo-card">
+                                <img src="<%= photo.url %>" alt="<%= photo.name %>">
+                                <div class="modern-photo-overlay">
+                                    <p><%= photo.description.substring(0, 80) + "..." %></p>
+                                </div>
+                            </a>
                         </div>
-                    </a>
-                <% } %>
+                    <% } %>
+                </div>
+                <button class="slider-nav prev" onclick="moveSlider(-1)">
+                    <i class="fa fa-chevron-left"></i>
+                </button>
+                <button class="slider-nav next" onclick="moveSlider(1)">
+                    <i class="fa fa-chevron-right"></i>
+                </button>
             </div>
         </section>
+
+        <script>
+            function moveSlider(direction) {
+                const slider = document.getElementById('latestPhotosSlider');
+                const scrollAmount = slider.clientWidth; 
+                slider.scrollBy({
+                    left: direction * scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        </script>
     </main>
     
 <%- include("partials/_footer") %>

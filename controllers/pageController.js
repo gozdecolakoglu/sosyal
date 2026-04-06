@@ -3,7 +3,7 @@ import Photo from '../models/photoModel.js';
 import User from '../models/userModel.js';
 
 const getIndexPage = async (req, res) => {
-  const photos = await Photo.find().sort({ uploadedAt: -1 }).limit(3);
+  const photos = await Photo.find().sort({ uploadedAt: -1 }).limit(10);
 
   const numOfUser = await User.countDocuments({});
   const numOfPhotos = await Photo.countDocuments({});

@@ -34,8 +34,8 @@ const createPhoto = async (req, res) => {
 const getAllPhotos = async (req, res) => {
   try {
     const photos = res.locals.user
-      ? await Photo.find({ user: { $ne: res.locals.user._id } })
-      : await Photo.find({});
+      ? await Photo.find({ user: { $ne: res.locals.user._id } }).sort({ uploadedAt: -1 }).limit(10)
+      : await Photo.find({}).sort({ uploadedAt: -1 }).limit(10);
     res.status(200).render('photos', {
       photos,
       link: 'photos',

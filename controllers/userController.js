@@ -69,7 +69,7 @@ const createToken = (userId) => {
 };
 
 const getDashboardPage = async (req, res) => {
-  const photos = await Photo.find({ user: res.locals.user._id });
+  const photos = await Photo.find({ user: res.locals.user._id }).sort({ uploadedAt: -1 }).limit(10);
   const user = await User.findById({ _id: res.locals.user._id }).populate([
     'followings',
     'followers',
@@ -100,7 +100,7 @@ const getAUser = async (req, res) => {
     const inFollowers = user.followers.some((follower) => {
       return follower.equals(res.locals.user._id);
     });
-    const photos = await Photo.find({ user: user._id });
+    const photos = await Photo.find({ user: user._id }).sort({ uploadedAt: -1 }).limit(10);
     res.status(200).render('user', {
       user,
       photos,
