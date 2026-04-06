@@ -93,6 +93,13 @@ img {
   padding: 0 1.5rem;
 }
 
+.modern-container-full {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
 /* Card */
 .modern-card {
   background-color: var(--surface-color);
@@ -250,10 +257,18 @@ img {
 /* Photo Grid */
 .modern-photo-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
   margin-top: 2rem;
 }
+
+
+@media (max-width: 480px) {
+  .modern-photo-grid {
+    gap: 1px;
+  }
+}
+
 
 .modern-photo-card {
   position: relative;
@@ -263,6 +278,7 @@ img {
   cursor: pointer;
   box-shadow: var(--shadow-sm);
 }
+
 
 .modern-photo-card img {
   width: 100%;
