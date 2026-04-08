@@ -22,7 +22,7 @@ const conn = async () => {
     throw new Error(`Missing DB connection string. Set one of: ${DB_ENV_KEYS.join(', ')}`);
   }
 
-  if (!/^mongodb(\+srv)?:\/\//.test(dbUri)) {
+  if (!/^mongodb(\+srv)?:\/\//.sosyal(dbUri)) {
     throw new Error(`Invalid Mongo URI in ${usedKey}. It must start with mongodb:// or mongodb+srv://`);
   }
 
