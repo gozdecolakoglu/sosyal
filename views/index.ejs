@@ -3,17 +3,22 @@
     <%- include("partials/_menu") %>
     
     <main class="modern-container">
-        <!-- Hero Section -->
-        <section class="modern-card mt-8 mb-8" style="padding: 4rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; background: linear-gradient(to right, var(--bg-color), var(--surface-color));">
-            <div style="flex: 1 1 45%;">
-                <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 1.5rem;" class="text-gradient">Share your best moments.</h1>
-                <p class="text-secondary" style="font-size: 1.25rem; margin-bottom: 2rem;">Join the community, explore stunning photos, and connect with creative minds.</p>
-                <a class="modern-btn modern-btn-primary" style="font-size: 1.125rem; padding: 0.75rem 2rem;" href="<%= user ? 'users/dashboard' : '/register' %>">Get Started</a>
+    <section class="mt-8 mb-8" style="min-height: 60vh; display: flex; align-items: center;">
+        <div style="display: flex; flex-wrap: wrap; gap: 4rem; align-items: center; width: 100%;">
+            <div style="flex: 1 1 40%;">
+                <h1 class="text-gradient" style="font-size: 3.5rem; margin-bottom: 1.5rem; font-weight: 800; line-height: 1.1;">Share your best moments.</h1>
+                <p class="text-secondary mb-6" style="font-size: 1.25rem; line-height: 1.8;">
+                    Join the community, explore stunning photos, and connect with creative minds. Discover the beauty of photography through the eyes of others.
+                </p>
+                <a href="<%= user ? '/users/dashboard' : '/register' %>" class="modern-btn modern-btn-primary" style="padding: 0.75rem 2rem; font-size: 1.125rem;">Get Started</a>
             </div>
-            <div style="flex: 1 1 50%; display: flex; justify-content: center; padding-top: 2rem;">
-                <img src="/images/img.png" alt="Hero" style="border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); max-width: 100%;">
+            <div style="flex: 1 1 50%;">
+                <div class="modern-card" style="padding: 1rem;">
+                    <img src="/images/img.png" alt="Hero" style="width: 100%; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
         <!-- Stats Section -->
         <section class="mb-8" style="display: flex; gap: 2rem; justify-content: center;">
