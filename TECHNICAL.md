@@ -1,109 +1,88 @@
-# Project "Sosyal" Technical Documentation
+indirilen paketler:
+npm init
+npm install express
+npm install -D nodemon
+npm i mongoose
+npm i ejs
+npm i dotenv
+npm i cookie -parser
+npm i bcryptjs
+npm i validator
+npm i jsonwebtoken
+npm i cloudinary
+npm i express-fileupload
+npm i method-override
+npm i nodemailler
+npm install method-override
+npm i multer
+npm i path
 
-## 1. Overview
-**Sosyal** is a modern social media platform designed for visual sharing and community interaction. It allows users to upload photos, follow other users, exchange private messages, and share their daily mood. The platform focuses on a clean, responsive user experience with a robust backend to handle real-time social interactions.
+1-Kurulumlar,
+Template kurulumu
+npm init -y
+npm i ejs
+Nodemon paket kurulumu
+Express paket kurulumu
+Github Repo 
+2- Template dosyalarının ayarlanması,
+Static dosyalar
+Views dosyalar
+Partials dosyalar
+3- Veritabanı bağlantıları,
+Veritabanı bağlantısı
+MongoDb
+ENV
+Mongoose paket kurulumu
+4-MVC Yapısı,
+Model
+View
+Controller
+5- Model oluşturma,
+Mongoose
+Schema Yapısı
+6- Thunder Client extension
+Thunder client kurulumu
+collection,request, reponse
+Photolar için controller route ve app .js dosyalarında düzenleme
+modeller yardımıyla yeni fotoğraflar eklenmesi sağlandı mongodb den kontrol edildi. thunder clienttan istekler gönderildi.
+7-photoların listelenmesi ve sıralanması
+dinamik photolar eklenmesi name ve descriptionların eklenmesi
+menü tıklanmasında hangi menüdeysek hover olması controllera link eklenmesi ve activelik durumunun güncellenmesi
+8-photo sayfasının oluşturulması
+9- register sayfasının oluşturulması
+10- kayıt işlemlerinde şifre gizleme,
+Bcrypt JS kurulumu
+password şifreleme
+login sayfasının  oluşturulması
+11- Kullanıcı yetkileri,
+Authentication, Authorization, JSON web token jwt
+12- Token kayıt,
+cookie parser kurulumu
+13- Kayıtlı kullanıcı için dinamik sayfa görünümü
+14- Validation kavramı, validator kurulumu, Register uyarıları
+15- Fotoğraf ve kullanıcı ilişkisi, Kullanıcının fotoğraf eklemesi
+16- Görsel yükleme, cloudinary platformu ilişkisi, cloudinary kurulumu , express file upload paketi kurulumu
+17- Kullanıcıların ve Profil sayfalarının oluşturulması
+18- bugların giderilmesi, follow,followers
+19- follow-followers-unfollow, method-override kurulumu
+20- Photo delete işlemi
+21- photo update işlemleri
+22- İletişim sayfaları, nodemailler kurulumu
+23- Bugların giderilmesi
+24- Read me update
+25- Profil fotoğrafı güncelleme
+26- css dosyaları , header footer index about sayfalarında düzenlemeler
 
----
-
-## 2. Architecture
-The project follows a standard **MVC (Model-View-Controller)** pattern built on the **MEN stack** (MongoDB, Express.js, Node.js).
-
-- **Backend**: Node.js with Express.js framework.
-- **Database**: MongoDB (Atlas) using Mongoose ODM.
-- **Frontend**: SSR (Server-Side Rendering) using EJS template engine.
-- **File Storage**: Cloudinary (for cloud-based image management).
-- **Authentication**: JWT (JSON Web Tokens) stored in HTTP-only cookies, with password hashing via bcrypt.
-
----
-
-## 3. Tech Stack & Dependencies
-
-| Category | Technology | Purpose |
-| :--- | :--- | :--- |
-| **Runtime** | Node.js | Server-side execution |
-| **Framework** | Express.js | Web application framework |
-| **Database** | MongoDB / Mongoose | Data persistence and modeling |
-| **View Engine** | EJS | Dynamic HTML rendering |
-| **Auth** | JWT / bcrypt | Security and session management |
-| **Storage** | Cloudinary | Image hosting and transformations |
-| **Mailing** | Nodemailer | Email notifications (Reset password, etc.) |
-| **Utilities** | validator / dotenv | Data validation and environment config |
-
----
-
-## 4. Core Features
-
-### 📸 Photo Management
-- Multi-column responsive photo grid.
-- Photo uploading with descriptions and titles.
-- Likes and Dislikes system.
-- Commenting functionality on individual photos.
-
-### 👤 User Profiles & Social
-- Personalized dashboards.
-- Avatar customization (Upload/Delete with History).
-- Follow/Unfollow mechanism.
-- Followers and Following lists.
-
-### ✉️ Messaging System
-- Private one-on-one messaging.
-- Real-time conversation view.
-- Participant management via `messagesRoute.js`.
-
-### 😊 Mood Tracking
-- Daily mood selection via emojis.
-- Community mood statistics tracking.
-
----
-
-## 5. Data Models (Schema)
-
-### User Model (`userModel.js`)
-- `username`: Unique alphanumeric string.
-- `email`: Unique validated email.
-- `password`: Hashed string.
-- `avatar`: Object containing `url` and `public_id`.
-- `followers`: Array of User IDs.
-- `followings`: Array of User IDs.
-
-### Photo Model (`photoModel.js`)
-- `name` & `description`: Strings for metadata.
-- `url`: Cloudinary hosted image URL.
-- `user`: Reference to the uploader.
-- `comments`: Sub-documents containing text, author, and timestamp.
-- `likes` / `dislikes`: Arrays of User IDs.
-
-### Message Model (`messageModel.js`)
-- `from` / `to`: References to User IDs.
-- `text`: Message content.
-- `createdAt`: Timestamp.
-
----
-
-## 6. Project Structure
-
-```text
-├── controllers/      # Business logic and request handlers
-├── models/           # Mongoose schemas and data structure
-├── routes/           # API endpoints and page navigation
-├── views/            # EJS templates (partials, layouts, pages)
-├── public/           # Static assets (CSS, client-side JS, images)
-├── middlewares/      # Auth checks, error handling, file uploads
-├── db.js             # Database connection logic
-├── app.js            # Express app configuration
-└── server.js         # Entry point (Port listening)
-```
-
----
-
-## 7. Configuration & Environment
-The application requires a `.env` file with the following keys:
-- `DB_URL`: MongoDB connection string.
-- `JWT_SECRET`: Secret key for signing tokens.
-- `CLOUD_NAME`, `CLOUD_API_KEY`, `CLOUD_API_SECRET`: Cloudinary credentials.
-- `DB_NAME`: Database name (default: "sosyal").
-
----
-
-## 8. Deployment
-Configured for deployment on **Vercel** via `vercel.json`, handling serverless functions and asset routing.
+.env dosyasında olması gerekenler:
+// mongodb için;
+DB_URL=
+PORT=
+//json web token için;
+JWT_SECRET = 
+//cloudinart için ;
+CLOUD_NAME=
+CLOUD_API_KEY=
+CLOUD_API_SECRET=
+İletişim sayfası maili için ;
+NODE_MAIL= 
+NODE_PASS= 
