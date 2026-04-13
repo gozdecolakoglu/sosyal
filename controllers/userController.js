@@ -82,10 +82,32 @@ const getDashboardPage = async (req, res) => {
 };
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({ _id: { $ne: res.locals.user._id } });
+    const perPage = 12;
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const search = (req.query.search || '').trim();
+
+    // Build filter: exclude current user + optional search
+    const filter = { _id: { $ne: res.locals.user._id } };
+    if (search) {
+      filter.username = { $regex: search, $options: 'i' };
+    }
+
+    const totalUsers = await User.countDocuments(filter);
+    const totalPages = Math.ceil(totalUsers / perPage) || 1;
+    const currentPage = Math.min(page, totalPages);
+
+    const users = await User.find(filter)
+      .sort({ createdAt: -1 })
+      .skip((currentPage - 1) * perPage)
+      .limit(perPage);
+
     res.status(200).render('users', {
       users,
       link: 'users',
+      currentPage,
+      totalPages,
+      totalUsers,
+      search,
     });
   } catch (error) {
     res.status(500).json({

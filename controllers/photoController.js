@@ -33,12 +33,40 @@ const createPhoto = async (req, res) => {
 
 const getAllPhotos = async (req, res) => {
   try {
-    const photos = res.locals.user
-      ? await Photo.find({ user: { $ne: res.locals.user._id } }).sort({ uploadedAt: -1 }).limit(10)
-      : await Photo.find({}).sort({ uploadedAt: -1 }).limit(10);
+    const perPage = 12;
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const search = (req.query.search || '').trim();
+
+    // Build filter: optionally exclude current user's photos
+    const filter = {};
+    if (res.locals.user) {
+      filter.user = { $ne: res.locals.user._id };
+    }
+
+    // Add search condition (name OR description)
+    if (search) {
+      filter.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    const totalPhotos = await Photo.countDocuments(filter);
+    const totalPages = Math.ceil(totalPhotos / perPage) || 1;
+    const currentPage = Math.min(page, totalPages);
+
+    const photos = await Photo.find(filter)
+      .sort({ uploadedAt: -1 })
+      .skip((currentPage - 1) * perPage)
+      .limit(perPage);
+
     res.status(200).render('photos', {
       photos,
       link: 'photos',
+      currentPage,
+      totalPages,
+      totalPhotos,
+      search,
     });
   } catch (error) {
     res.status(500).json({

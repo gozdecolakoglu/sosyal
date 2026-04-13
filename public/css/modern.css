@@ -805,3 +805,209 @@ img {
   }
 }
 
+/* =============================================
+   USERS PAGE - SEARCH & PAGINATION
+   ============================================= */
+
+/* Search Bar */
+.users-search-wrapper {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.users-search-form {
+  width: 100%;
+}
+
+.users-search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.users-search-icon {
+  position: absolute;
+  left: 1rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  pointer-events: none;
+  transition: color var(--transition-fast);
+}
+
+.users-search-input {
+  padding-left: 2.75rem !important;
+  padding-right: 2.75rem !important;
+  height: 3rem;
+  font-size: 0.95rem !important;
+  border-radius: var(--radius-lg) !important;
+  background-color: var(--surface-color) !important;
+  border: 2px solid var(--border-color) !important;
+  transition: all var(--transition-fast) !important;
+}
+
+.users-search-input:focus {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 4px rgba(217, 70, 239, 0.15) !important;
+}
+
+.users-search-input:focus ~ .users-search-icon,
+.users-search-input-wrapper:focus-within .users-search-icon {
+  color: var(--accent-color);
+}
+
+.users-search-clear {
+  position: absolute;
+  right: 0.75rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  background: var(--bg-color);
+  transition: all var(--transition-fast);
+  font-size: 0.8rem;
+}
+
+.users-search-clear:hover {
+  background: var(--accent-color);
+  color: white;
+}
+
+.users-search-meta {
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+/* User Cards */
+.users-card {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.users-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.users-card-avatar {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1rem;
+  transition: transform var(--transition-fast);
+}
+
+.users-card:hover .users-card-avatar {
+  transform: scale(1.08);
+}
+
+/* Empty State */
+.users-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* Pagination */
+.pagination-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0 0.5rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.pagination-btn:hover:not(.disabled):not(.active) {
+  background: var(--bg-color);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+.pagination-btn.active {
+  background: var(--accent-gradient);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(217, 70, 239, 0.35);
+  font-weight: 600;
+}
+
+.pagination-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.pagination-dots {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2.5rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  user-select: none;
+}
+
+.pagination-prev,
+.pagination-next {
+  font-size: 0.75rem;
+}
+
+.pagination-info {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* Responsive Pagination */
+@media (max-width: 480px) {
+  .pagination-btn {
+    min-width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.8rem;
+  }
+
+  .users-search-input {
+    height: 2.75rem;
+    font-size: 0.875rem !important;
+  }
+}
