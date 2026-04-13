@@ -41,6 +41,10 @@ const photoSchema = new Schema({
       type: Date,
       default: Date.now,
     },
+    updatedAt: {
+      type: Date,
+      default: null,
+    },
   }],
   likes: [{
     type: Schema.Types.ObjectId,

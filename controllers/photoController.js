@@ -269,5 +269,62 @@ const dislikePhoto = async (req, res) => {
     });
   }
 };
+const editComment = async (req, res) => {
+  try {
+    if (!res.locals.user) {
+      return res.status(401).redirect('/users/login');
+    }
 
-export { createPhoto, getAllPhotos, getAPhoto, deletePhoto, updatePhoto, addComment, dislikePhoto, likePhoto, };
+    const photo = await Photo.findById(req.params.id);
+    const comment = photo.comments.id(req.params.commentId);
+
+    if (!comment) {
+      return res.status(404).json({ succeeded: false, error: 'Comment not found' });
+    }
+
+    // Only comment owner can edit
+    if (!comment.postedBy.equals(res.locals.user._id)) {
+      return res.status(403).json({ succeeded: false, error: 'Not authorized' });
+    }
+
+    comment.text = req.body.text;
+    comment.updatedAt = new Date();
+
+    await photo.save();
+    res.redirect(`/photos/${req.params.id}`);
+
+  } catch (error) {
+    console.error('Edit comment error:', error);
+    res.status(500).json({ succeeded: false, error: error.message });
+  }
+};
+
+const deleteComment = async (req, res) => {
+  try {
+    if (!res.locals.user) {
+      return res.status(401).redirect('/users/login');
+    }
+
+    const photo = await Photo.findById(req.params.id);
+    const comment = photo.comments.id(req.params.commentId);
+
+    if (!comment) {
+      return res.status(404).json({ succeeded: false, error: 'Comment not found' });
+    }
+
+    // Only comment owner or photo owner can delete
+    if (!comment.postedBy.equals(res.locals.user._id) && !photo.user.equals(res.locals.user._id)) {
+      return res.status(403).json({ succeeded: false, error: 'Not authorized' });
+    }
+
+    photo.comments.pull({ _id: req.params.commentId });
+    await photo.save();
+    res.redirect(`/photos/${req.params.id}`);
+
+  } catch (error) {
+    console.error('Delete comment error:', error);
+    res.status(500).json({ succeeded: false, error: error.message });
+  }
+};
+
+export { createPhoto, getAllPhotos, getAPhoto, deletePhoto, updatePhoto, addComment, dislikePhoto, likePhoto, editComment, deleteComment };

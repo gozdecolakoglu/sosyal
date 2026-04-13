@@ -40,7 +40,11 @@ The project follows a standard **MVC (Model-View-Controller)** pattern built on 
 - **Search**: Case-insensitive search by photo name or description with debounced auto-submit.
 - **Pagination**: 12 photos per page with smart page windowing.
 - Likes and Dislikes toggle system.
-- Commenting functionality on individual photos with commenter avatars.
+- **Comments**:
+  - Users can post comments on photos with commenter avatars.
+  - Users can **edit** their own comments inline.
+  - Users can **delete** their own comments.
+  - Photo owners can delete any comment on their photos.
 - Photo update and delete with Cloudinary sync.
 
 ### 👤 User Profile Management
@@ -161,6 +165,8 @@ The project follows a standard **MVC (Model-View-Controller)** pattern built on 
 | PUT | `/photos/:id` | ✅ | Update photo |
 | DELETE | `/photos/:id` | ✅ | Delete photo |
 | POST | `/photos/:id/comments` | ✅ | Add comment |
+| PUT | `/photos/:id/comments/:commentId` | ✅ | Edit existing comment |
+| DELETE | `/photos/:id/comments/:commentId` | ✅ | Delete comment |
 | POST | `/photos/:id/like` | ✅ | Toggle like |
 | POST | `/photos/:id/dislike` | ✅ | Toggle dislike |
 
