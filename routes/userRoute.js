@@ -9,6 +9,20 @@ router.route('/login').post(userController.loginUser);
 router
   .route('/dashboard')
   .get(authMiddleware.authenticateToken, userController.getDashboardPage);
+
+// Avatar routes
+router
+  .route('/dashboard/avatar')
+  .post(authMiddleware.authenticateToken, userController.updateAvatar);
+router
+  .route('/dashboard/avatar/delete')
+  .post(authMiddleware.authenticateToken, userController.deleteAvatar);
+
+// Bio route
+router
+  .route('/dashboard/bio')
+  .post(authMiddleware.authenticateToken, userController.updateBio);
+
 router
   .route('/')
   .get(authMiddleware.authenticateToken, userController.getAllUsers);

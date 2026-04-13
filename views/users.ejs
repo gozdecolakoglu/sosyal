@@ -9,11 +9,16 @@
             <% for (user of users) { %>
                 <div class="modern-card" style="padding: 2rem; display: flex; flex-direction: column; align-items: center; text-align: center;">
                     <a href="/users/<%= user._id %>">
-                        <img src="images/team4.png" alt="Avatar" class="modern-avatar" style="width: 80px; height: 80px; margin-bottom: 1rem;">
+                        <img src="<%= user.avatar ? user.avatar.url : '/images/profile_1.jpg' %>" alt="Avatar" class="modern-avatar" style="width: 80px; height: 80px; margin-bottom: 1rem;">
                     </a>
-                    <h3 style="margin-bottom: 1.5rem;">
+                    <h3 style="margin-bottom: 0.5rem;">
                         <a href="/users/<%= user._id %>" class="text-primary" style="font-weight: 600; font-size: 1.25rem;"><%= user.username %></a>
                     </h3>
+                    <% if (user.bio && user.bio.trim()) { %>
+                        <p class="text-secondary" style="font-size: 0.85rem; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;"><%= user.bio %></p>
+                    <% } else { %>
+                        <p class="text-secondary" style="font-size: 0.85rem; margin-bottom: 1rem; opacity: 0.5;">No bio yet</p>
+                    <% } %>
                     <div style="display: flex; gap: 0.5rem; width: 100%;">
                         <a href="/users/<%= user._id %>" class="modern-btn modern-btn-outline" style="flex: 1;"><i class="fa fa-user"></i>&nbsp;Profile</a>
                         <a href="/messages/<%= user._id %>" class="modern-btn modern-btn-primary" style="flex: 1;"><i class="fa fa-comments"></i>&nbsp;Chat</a>

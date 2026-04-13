@@ -7,7 +7,7 @@
             <!-- Chat Header -->
             <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; background: var(--bg-color);">
                 <div style="display: flex; align-items: center; gap: 1rem;">
-                    <img src="/images/team4.png" alt="Avatar" class="modern-avatar">
+                    <img src="<%= otherUser.avatar ? otherUser.avatar.url : '/images/profile_1.jpg' %>" alt="Avatar" class="modern-avatar">
                     <h2 style="margin: 0; font-size: 1.25rem;"><%= otherUser.username %></h2>
                 </div>
                 <a href="/users/<%= otherUser._id %>" class="modern-btn modern-btn-outline"><i class="fa fa-user"></i>&nbsp;Profile</a>

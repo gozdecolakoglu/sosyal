@@ -17,7 +17,7 @@ router.get("/", authenticateToken, async (req, res) => {
   // Kullanıcının mesajlaştığı mesajlar
   const messages = await Message.find({
     $or: [{ from: userId }, { to: userId }]
-  }).populate("from to", "username");
+  }).populate("from to", "username avatar");
 
   // Unique kullanıcıları map ile bul
   const usersMap = new Map();
@@ -48,7 +48,7 @@ router.get("/:id", authenticateToken, async (req, res) => {
       { from: user._id, to: otherUser._id },
       { from: otherUser._id, to: user._id }
     ]
-  }).populate("from to", "username").sort("createdAt");
+  }).populate("from to", "username avatar").sort("createdAt");
 
   res.render("messageDetail", { otherUser, messages, link: "messages" });
 });

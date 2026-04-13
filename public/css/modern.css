@@ -583,3 +583,225 @@ img {
   color: white !important;
   border: none !important;
 }
+
+/* =============================================
+   PROFILE MANAGEMENT STYLES
+   ============================================= */
+
+/* Profile Header Card */
+.profile-header-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Avatar Wrapper & Container */
+.profile-avatar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-avatar-container {
+  position: relative;
+  cursor: pointer;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  width: 120px;
+  height: 120px;
+}
+
+.profile-avatar-img {
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  transition: filter var(--transition-fast);
+}
+
+.profile-avatar-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 500;
+  gap: 0.25rem;
+}
+
+.profile-avatar-overlay i {
+  font-size: 1.25rem;
+}
+
+.profile-avatar-container:hover .profile-avatar-overlay {
+  opacity: 1;
+}
+
+.profile-avatar-container:hover .profile-avatar-img {
+  filter: brightness(0.7);
+}
+
+/* Avatar Action Buttons */
+.profile-avatar-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all var(--transition-normal);
+}
+
+.profile-avatar-actions.show {
+  opacity: 1;
+  max-height: 60px;
+}
+
+.profile-avatar-btn {
+  padding: 0.4rem 1rem !important;
+  font-size: 0.8rem !important;
+}
+
+.profile-avatar-delete {
+  border-color: #dc2626 !important;
+  color: #dc2626 !important;
+}
+
+.profile-avatar-delete:hover {
+  background: #dc2626 !important;
+  color: white !important;
+}
+
+/* Profile Stats Bar */
+.profile-stats {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  padding: 1rem 0;
+  margin-bottom: 0.5rem;
+}
+
+.profile-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.profile-stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.profile-stat-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Bio Section */
+.profile-bio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.profile-bio-display {
+  animation: fadeIn var(--transition-normal);
+}
+
+.profile-bio-text {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.profile-bio-empty {
+  color: var(--text-secondary);
+  font-style: italic;
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+.profile-bio-form {
+  animation: slideDown 0.3s ease;
+}
+
+.profile-bio-textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+.profile-bio-counter {
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+  transition: color var(--transition-fast);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Profile Styles */
+@media (max-width: 768px) {
+  .profile-stats {
+    gap: 1.25rem;
+  }
+
+  .profile-stat-number {
+    font-size: 1.25rem;
+  }
+
+  .profile-avatar-container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-avatar-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-bio-header {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+}
+

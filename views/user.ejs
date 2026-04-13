@@ -4,9 +4,30 @@
 
     <main class="modern-container mt-8 mb-8" style="min-height: 70vh;">
         <!-- Header / Profile Info -->
-        <div class="modern-card p-6 mb-8" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-            <img src="/images/profile_1.jpg" alt="Profile Photo" class="modern-avatar-lg" style="border-radius: 50%; object-fit: cover; margin-bottom: 1.5rem;">
-            <h2 class="text-gradient" style="font-size: 2rem; margin-bottom: 1.5rem;"><%= user.username %></h2>
+        <div class="modern-card p-6 mb-8 profile-header-card">
+            <div class="profile-avatar-wrapper">
+                <div class="profile-avatar-container">
+                    <img src="<%= user.avatar ? user.avatar.url : '/images/profile_1.jpg' %>" alt="Profile Photo" class="modern-avatar-lg profile-avatar-img">
+                </div>
+            </div>
+            
+            <h2 class="text-gradient" style="font-size: 2rem; margin-bottom: 0.5rem;"><%= user.username %></h2>
+            
+            <!-- Stats Bar -->
+            <div class="profile-stats mb-4">
+                <div class="profile-stat">
+                    <span class="profile-stat-number"><%= user.followers.length %></span>
+                    <span class="profile-stat-label">Followers</span>
+                </div>
+                <div class="profile-stat">
+                    <span class="profile-stat-number"><%= user.followings.length %></span>
+                    <span class="profile-stat-label">Following</span>
+                </div>
+                <div class="profile-stat">
+                    <span class="profile-stat-number"><%= photos.length %></span>
+                    <span class="profile-stat-label">Photos</span>
+                </div>
+            </div>
             
             <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
                 <% if (!inFollowers) { %>
@@ -24,6 +45,16 @@
                 </a>
             </div>
         </div>
+
+        <!-- Bio / About Section -->
+        <% if (user.bio && user.bio.trim()) { %>
+        <div class="modern-card p-6 mb-8">
+            <h3 style="font-size: 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fa fa-info-circle" style="color: var(--accent-color);"></i> About <%= user.username %>
+            </h3>
+            <p class="profile-bio-text" style="margin: 0;"><%= user.bio %></p>
+        </div>
+        <% } %>
 
         <!-- User's Photos -->
         <% if (photos.length > 0) { %>

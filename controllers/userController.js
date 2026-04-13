@@ -96,9 +96,12 @@ const getAllUsers = async (req, res) => {
 };
 const getAUser = async (req, res) => {
   try {
-    const user = await User.findById({ _id: req.params.id });
+    const user = await User.findById({ _id: req.params.id }).populate([
+      'followers',
+      'followings',
+    ]);
     const inFollowers = user.followers.some((follower) => {
-      return follower.equals(res.locals.user._id);
+      return follower._id.equals(res.locals.user._id);
     });
     const photos = await Photo.find({ user: user._id }).sort({ uploadedAt: -1 }).limit(10);
     res.status(200).render('user', {
@@ -168,6 +171,10 @@ const unfollow = async (req, res) => {
 // Avatarı güncelle
 const updateAvatar = async (req, res) => {
   try {
+    if (!req.files || !req.files.avatar) {
+      return res.redirect('/users/dashboard');
+    }
+
     const user = await User.findById(res.locals.user._id);
     
     // Eski resmi sil
@@ -177,9 +184,12 @@ const updateAvatar = async (req, res) => {
 
     // Yeni resmi yükle
     const result = await cloudinary.uploader.upload(
-      req.file.path, // Multer'dan gelen dosya yolu
+      req.files.avatar.tempFilePath,
       {
         folder: 'avatars',
+        transformation: [
+          { width: 400, height: 400, crop: 'fill', gravity: 'face' }
+        ]
       }
     );
 
@@ -189,11 +199,12 @@ const updateAvatar = async (req, res) => {
     };
 
     await user.save();
-    fs.unlinkSync(req.file.path); // Temp dosyayı sil
+    fs.unlinkSync(req.files.avatar.tempFilePath); // Temp dosyayı sil
 
     res.redirect('/users/dashboard');
 
   } catch (error) {
+    console.error('Avatar update error:', error);
     res.status(500).json({
       succeeded: false,
       error
@@ -229,6 +240,34 @@ const deleteAvatar = async (req, res) => {
   }
 };
 
+// Bio güncelle
+const updateBio = async (req, res) => {
+  try {
+    const { bio } = req.body;
+    
+    if (bio && bio.length > 500) {
+      return res.status(400).json({
+        succeeded: false,
+        error: 'Bio cannot exceed 500 characters'
+      });
+    }
+
+    await User.findByIdAndUpdate(
+      res.locals.user._id,
+      { bio: bio || '' },
+      { new: true, runValidators: true }
+    );
+
+    res.redirect('/users/dashboard');
+  } catch (error) {
+    console.error('Bio update error:', error);
+    res.status(500).json({
+      succeeded: false,
+      error
+    });
+  }
+};
+
 export {
   createUser,
   loginUser,
@@ -239,4 +278,5 @@ export {
   unfollow,
   updateAvatar, 
   deleteAvatar,
+  updateBio,
 };

@@ -30,6 +30,12 @@ const userSchema = new Schema(
       },
       public_id: String
     },
+    bio: {
+      type: String,
+      maxLength: [500, 'Bio cannot exceed 500 characters'],
+      default: '',
+      trim: true,
+    },
     followers: [
       {
         type: Schema.Types.ObjectId,

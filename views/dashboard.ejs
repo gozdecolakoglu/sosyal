@@ -4,13 +4,95 @@
 
     <main class="modern-container mt-8 mb-8" style="min-height: 70vh;">
         <!-- Header / Profile Info -->
-        <div class="modern-card p-6 mb-8" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-            <img src="<%= user.avatar.url %>" alt="Profile Photo" class="modern-avatar-lg" style="border-radius: 50%; object-fit: cover; margin-bottom: 1.5rem;">
+        <div class="modern-card p-6 mb-8 profile-header-card">
+            <!-- Avatar Section -->
+            <div class="profile-avatar-wrapper">
+                <div class="profile-avatar-container" id="avatarContainer">
+                    <img src="<%= user.avatar.url %>" alt="Profile Photo" class="modern-avatar-lg profile-avatar-img" id="avatarPreview">
+                    <div class="profile-avatar-overlay" id="avatarOverlay">
+                        <i class="fa fa-camera"></i>
+                        <span>Change</span>
+                    </div>
+                </div>
+                <!-- Avatar Actions (shown on hover/click) -->
+                <div class="profile-avatar-actions" id="avatarActions">
+                    <form action="/users/dashboard/avatar" method="POST" enctype="multipart/form-data" id="avatarForm">
+                        <label for="avatarInput" class="modern-btn modern-btn-primary profile-avatar-btn">
+                            <i class="fa fa-upload"></i>&nbsp;Upload Photo
+                        </label>
+                        <input type="file" name="avatar" id="avatarInput" accept="image/*" style="display: none;">
+                    </form>
+                    <% if (user.avatar.url !== '/images/profile_1.jpg') { %>
+                    <form action="/users/dashboard/avatar/delete" method="POST">
+                        <button type="submit" class="modern-btn modern-btn-outline profile-avatar-btn profile-avatar-delete" onclick="return confirm('Remove your profile photo?')">
+                            <i class="fa fa-trash"></i>&nbsp;Remove
+                        </button>
+                    </form>
+                    <% } %>
+                </div>
+            </div>
+
             <h2 class="text-gradient" style="font-size: 2rem; margin-bottom: 0.5rem;"><%= user.username %></h2>
-            <p class="text-secondary mb-6">Welcome to your dashboard</p>
-            <button data-toggle="modal" data-target=".bd-example-modal-lg" class="modern-btn modern-btn-primary">
+            <p class="text-secondary mb-4">Welcome to your dashboard</p>
+
+            <!-- Stats Bar -->
+            <div class="profile-stats">
+                <div class="profile-stat">
+                    <span class="profile-stat-number"><%= user.followers.length %></span>
+                    <span class="profile-stat-label">Followers</span>
+                </div>
+                <div class="profile-stat">
+                    <span class="profile-stat-number"><%= user.followings.length %></span>
+                    <span class="profile-stat-label">Following</span>
+                </div>
+                <div class="profile-stat">
+                    <span class="profile-stat-number"><%= photos.length %></span>
+                    <span class="profile-stat-label">Photos</span>
+                </div>
+            </div>
+
+            <button data-toggle="modal" data-target=".bd-example-modal-lg" class="modern-btn modern-btn-primary mt-4">
                 <i class="fa fa-plus"></i>&nbsp;Add New Photo
             </button>
+        </div>
+
+        <!-- Bio / About Me Section -->
+        <div class="modern-card p-6 mb-8">
+            <div class="profile-bio-header">
+                <h3 style="font-size: 1.25rem; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa fa-pencil-square-o" style="color: var(--accent-color);"></i> About Me
+                </h3>
+                <button type="button" class="modern-btn modern-btn-outline" id="bioEditToggle" style="padding: 0.4rem 0.75rem; font-size: 0.8rem;">
+                    <i class="fa fa-edit"></i>&nbsp;Edit
+                </button>
+            </div>
+            
+            <!-- Bio Display -->
+            <div id="bioDisplay" class="profile-bio-display">
+                <% if (user.bio && user.bio.trim()) { %>
+                    <p class="profile-bio-text"><%= user.bio %></p>
+                <% } else { %>
+                    <p class="profile-bio-empty">You haven't written anything about yourself yet. Click "Edit" to add a bio!</p>
+                <% } %>
+            </div>
+
+            <!-- Bio Edit Form (hidden by default) -->
+            <form action="/users/dashboard/bio" method="POST" id="bioEditForm" class="profile-bio-form" style="display: none;">
+                <div class="modern-form-group" style="margin-bottom: 0.75rem;">
+                    <textarea name="bio" id="bioTextarea" class="modern-input profile-bio-textarea" 
+                        maxlength="500" rows="4" 
+                        placeholder="Tell others about yourself..."><%= user.bio || '' %></textarea>
+                    <div class="profile-bio-counter">
+                        <span id="bioCharCount"><%= (user.bio || '').length %></span>/500
+                    </div>
+                </div>
+                <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+                    <button type="button" class="modern-btn modern-btn-outline" id="bioCancelBtn" style="padding: 0.4rem 1rem;">Cancel</button>
+                    <button type="submit" class="modern-btn modern-btn-primary" style="padding: 0.4rem 1rem;">
+                        <i class="fa fa-check"></i>&nbsp;Save
+                    </button>
+                </div>
+            </form>
         </div>
 
         <!-- My Photos -->
@@ -38,7 +120,7 @@
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
                 <% for (follower of user.followers) { %>
                     <a href="/users/<%= follower._id %>" class="modern-user-card modern-card">
-                        <img src="/images/team4.png" alt="Avatar" class="modern-avatar">
+                        <img src="<%= follower.avatar ? follower.avatar.url : '/images/profile_1.jpg' %>" alt="Avatar" class="modern-avatar">
                         <div class="modern-user-card-info">
                             <h4><%= follower.username %></h4>
                             <p>View Profile</p>
@@ -56,7 +138,7 @@
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
                 <% for (following of user.followings) { %>
                     <a href="/users/<%= following._id %>" class="modern-user-card modern-card">
-                        <img src="/images/team4.png" alt="Avatar" class="modern-avatar">
+                        <img src="<%= following.avatar ? following.avatar.url : '/images/profile_1.jpg' %>" alt="Avatar" class="modern-avatar">
                         <div class="modern-user-card-info">
                             <h4><%= following.username %></h4>
                             <p>View Profile</p>
@@ -101,5 +183,86 @@
             </div>
         </div>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Avatar upload - auto submit on file select
+        const avatarInput = document.getElementById('avatarInput');
+        const avatarForm = document.getElementById('avatarForm');
+        const avatarPreview = document.getElementById('avatarPreview');
+        
+        if (avatarInput) {
+            avatarInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    
+                    // Validate file size (max 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('File size must be less than 5MB');
+                        this.value = '';
+                        return;
+                    }
+                    
+                    // Preview
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        avatarPreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                    
+                    // Auto submit
+                    avatarForm.submit();
+                }
+            });
+        }
+
+        // Avatar container hover toggle
+        const avatarContainer = document.getElementById('avatarContainer');
+        const avatarActions = document.getElementById('avatarActions');
+        
+        if (avatarContainer) {
+            avatarContainer.addEventListener('click', function() {
+                avatarActions.classList.toggle('show');
+            });
+        }
+
+        // Bio edit toggle
+        const bioEditToggle = document.getElementById('bioEditToggle');
+        const bioDisplay = document.getElementById('bioDisplay');
+        const bioEditForm = document.getElementById('bioEditForm');
+        const bioCancelBtn = document.getElementById('bioCancelBtn');
+        const bioTextarea = document.getElementById('bioTextarea');
+        const bioCharCount = document.getElementById('bioCharCount');
+
+        if (bioEditToggle) {
+            bioEditToggle.addEventListener('click', function() {
+                bioDisplay.style.display = 'none';
+                bioEditForm.style.display = 'block';
+                bioTextarea.focus();
+                this.style.display = 'none';
+            });
+        }
+
+        if (bioCancelBtn) {
+            bioCancelBtn.addEventListener('click', function() {
+                bioDisplay.style.display = 'block';
+                bioEditForm.style.display = 'none';
+                bioEditToggle.style.display = 'inline-flex';
+            });
+        }
+
+        if (bioTextarea) {
+            bioTextarea.addEventListener('input', function() {
+                bioCharCount.textContent = this.value.length;
+                
+                if (this.value.length >= 480) {
+                    bioCharCount.parentElement.style.color = '#dc2626';
+                } else {
+                    bioCharCount.parentElement.style.color = 'var(--text-secondary)';
+                }
+            });
+        }
+    });
+    </script>
 
 <%- include("partials/_footer") %>

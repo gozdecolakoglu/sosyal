@@ -13,7 +13,7 @@
                     <% conversationUsers.forEach(user => { %>
                     <li class="conversation-item">
                         <div style="display: flex; align-items: center; gap: 1rem;">
-                            <img src="/images/team4.png" alt="Avatar" class="modern-avatar">
+                            <img src="<%= user.avatar ? user.avatar.url : '/images/profile_1.jpg' %>" alt="Avatar" class="modern-avatar">
                             <span style="font-weight: 500;"><%= user.username %></span>
                         </div>
                         <a href="/messages/<%= user._id %>" class="modern-btn modern-btn-primary">

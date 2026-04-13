@@ -17,8 +17,9 @@
                 <div class="modern-card p-6">
                     <h2 class="text-gradient" style="font-size: 2rem; margin-bottom: 1rem;"><%= photo.name %></h2>
                     <p class="text-secondary mb-4"><%= photo.description %></p>
-                    <a href="/users/<%= photo.user._id %>" class="modern-btn modern-btn-outline" style="width: 100%;">
-                        <i class="fa fa-user"></i>&nbsp;Artist: <%= photo.user.username %>
+                    <a href="/users/<%= photo.user._id %>" class="modern-btn modern-btn-outline" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                        <img src="<%= photo.user.avatar ? photo.user.avatar.url : '/images/profile_1.jpg' %>" alt="Avatar" class="modern-avatar" style="width: 24px; height: 24px;">
+                        Artist: <%= photo.user.username %>
                     </a>
                     
                     <% if (isOwner) { %>
@@ -67,10 +68,13 @@
                         <% photo.comments.slice().sort((a, b) => b.createdAt - a.createdAt).forEach(comment => { %>
                             <div style="padding: 1.25rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-color);">
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; align-items: center;">
-                                    <span style="font-weight: 600; color: var(--text-primary);"><%= (comment.postedBy && comment.postedBy.username) ? comment.postedBy.username : 'Unknown User' %></span>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <img src="<%= (comment.postedBy && comment.postedBy.avatar) ? comment.postedBy.avatar.url : '/images/profile_1.jpg' %>" alt="Avatar" class="modern-avatar" style="width: 28px; height: 28px;">
+                                        <a href="<%= comment.postedBy ? '/users/' + comment.postedBy._id : '#' %>" style="font-weight: 600; color: var(--text-primary);"><%= (comment.postedBy && comment.postedBy.username) ? comment.postedBy.username : 'Unknown User' %></a>
+                                    </div>
                                     <span class="text-secondary" style="font-size: 0.8rem;"><%= comment.createdAt.toLocaleDateString() %></span>
                                 </div>
-                                <p style="margin: 0; font-size: 0.95rem; color: var(--text-secondary);"><%= comment.text %></p>
+                                <p style="margin: 0; font-size: 0.95rem; color: var(--text-secondary); padding-left: 2.25rem;"><%= comment.text %></p>
                             </div>
                         <% }) %>
                     </div>
